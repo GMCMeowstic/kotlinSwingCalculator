@@ -1,9 +1,11 @@
 /*
-    Coded By GMCMarshy with emotional support from my boyfriend Frost
+    Coded by GMCMarshy with emotional support from my boyfriend Frost
     -----------------------------------------------------------------
                                MIT License
-                       Do whatever the fuck you want
+          Do whatever the fuck you want BUT KEEP THE LICENSE FILE
  */
+
+// This shit was coded by a 14-year-old Filipino Furry Femboy so don't expect much.
 
 import java.awt.Color
 import java.awt.Font
@@ -83,260 +85,262 @@ val display = object : JLabel() {
 }
 val inst = JLabel("<html>Press <font color='blue'>ENTER</font> to enter a<br>value<br>Press <font color='lime'>(+,-,x,/)</font> to<br>do calculate values.</html>")
 fun main() {
-    val value = Values(0.0,0.0,0.0,0.0,0.0)
-    fun sideBar() {
-        val a = value.getA()
-        val b = value.getB()
-        val c = value.getC()
-        val d = value.getD()
-        val e = value.getE()
-        if (a != 0.0) valueDisplay1.text = a.toString()
-        if (b != 0.0) valueDisplay2.text = b.toString()
-        if (c != 0.0) valueDisplay3.text = c.toString()
-        if (d != 0.0) valueDisplay4.text = d.toString()
-        if (e != 0.0) valueDisplay5.text = e.toString()
-    }
-    valueLabel.apply {
-        setBounds(2, 0, 300, 100)
-        font = Font("Arial", Font.PLAIN, 40)
-    }
-    valueDisplay1.apply {
-        setBounds(2, 100, 300, 100)
-        font = Font("Arial", Font.PLAIN, 50)
-    }
-    valueDisplay2.apply {
-        setBounds(2, 200, 300, 100)
-        font = Font("Arial", Font.PLAIN, 50)
-    }
-    valueDisplay3.apply {
-        setBounds(2, 300, 300, 100)
-        font = Font("Arial", Font.PLAIN, 50)
-    }
-    valueDisplay4.apply {
-        setBounds(2, 400, 300, 100)
-        font = Font("Arial", Font.PLAIN, 50)
-    }
-    valueDisplay5.apply {
-        setBounds(2, 500, 300, 100)
-        font = Font("Arial", Font.PLAIN, 50)
-    }
-    display.apply {
-        background = Color.GRAY
-        font = Font("Arial", Font.PLAIN, 50)
-        setBounds(300,0,300,100)
-    }
-    butClear.apply {
-        foreground = Color.RED
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(600,0,100,100)
-    }
-    butBack.apply {
-        foreground = Color.RED
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(500,400,100,100)
-    }
-    butEnter.apply {
-        foreground = Color.BLUE
-        font = Font("Arial", Font.BOLD, 19)
-        setBounds(300, 400, 100, 100)
-    }
-    butAdd.apply {
-        foreground = Color.GREEN
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(600, 100, 100, 100)
-    }
-    butSub.apply {
-        foreground = Color.GREEN
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(600, 200, 100, 100)
-    }
-    butMul.apply {
-        foreground = Color.GREEN
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(600, 300, 100, 100)
-    }
-    butDiv.apply {
-        foreground = Color.GREEN
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(600, 400, 100, 100)
-    }
-    but1.apply {
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(300, 100, 100, 100)
-    }
-    but2.apply {
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(400, 100, 100, 100)
-    }
-    but3.apply {
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(500, 100, 100, 100)
-    }
-    but4.apply {
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(300, 200, 100, 100)
-    }
-    but5.apply {
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(400, 200, 100, 100)
-    }
-    but6.apply {
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(500, 200, 100, 100)
-    }
-    but7.apply {
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(300, 300, 100, 100)
-    }
-    but8.apply {
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(400, 300, 100, 100)
-    }
-    but9.apply {
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(500, 300, 100, 100)
-    }
-    but0.apply {
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(400, 400, 100, 100)
-    }
-    butInt.apply {
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(300, 500, 100, 100)
-    }
-    butDecimal.apply {
-        font = Font("Arial", Font.BOLD, 50)
-        setBounds(400, 500, 100, 100)
-    }
-    inst.setBounds(510,375,150,350)
-    but1.addActionListener { checkIfResulted(); currentDisplay += "1"; refresh() }
-    but2.addActionListener { checkIfResulted(); currentDisplay += "2"; refresh() }
-    but3.addActionListener { checkIfResulted(); currentDisplay += "3"; refresh() }
-    but4.addActionListener { checkIfResulted(); currentDisplay += "4"; refresh() }
-    but5.addActionListener { checkIfResulted(); currentDisplay += "5"; refresh() }
-    but6.addActionListener { checkIfResulted(); currentDisplay += "6"; refresh() }
-    but7.addActionListener { checkIfResulted(); currentDisplay += "7"; refresh() }
-    but8.addActionListener { checkIfResulted(); currentDisplay += "8"; refresh() }
-    but9.addActionListener { checkIfResulted(); currentDisplay += "9"; refresh() }
-    but0.addActionListener { checkIfResulted(); currentDisplay += "0"; refresh() }
-    butDecimal.addActionListener {
-        checkIfResulted()
-        if (isADecimal) errorSound()
-        else {
-            currentDisplay += "."
-            refresh()
-            isADecimal = true
+    SwingUtilities.invokeLater {
+        val value = Values(0.0,0.0,0.0,0.0,0.0)
+        fun sideBar() {
+            val a = value.getA()
+            val b = value.getB()
+            val c = value.getC()
+            val d = value.getD()
+            val e = value.getE()
+            SwingUtilities.invokeLater {
+                if (a != 0.0) valueDisplay1.text = a.toString()
+                if (b != 0.0) valueDisplay2.text = b.toString()
+                if (c != 0.0) valueDisplay3.text = c.toString()
+                if (d != 0.0) valueDisplay4.text = d.toString()
+                if (e != 0.0) valueDisplay5.text = e.toString()
+            }
         }
-    }
-    butInt.addActionListener {
-        checkIfResulted()
-        if (isAnInteger) errorSound()
-        if (currentDisplay != "") errorSound()
-        else {
-            currentDisplay += "-"
-            refresh()
-            isAnInteger
+        valueLabel.apply {
+            setBounds(2, 0, 300, 100)
+            font = Font("Arial", Font.PLAIN, 40)
         }
-    }
-    butClear.addActionListener {
-        currentDisplay = ""
-        refresh()
-        sideBarWipe()
-        isADecimal = false
-        isAnInteger = false
-    }
-    butBack.addActionListener {
-        if (currentDisplay == "") errorSound()
-        else {
-            currentDisplay = currentDisplay.dropLast(1)
-            refresh()
+        valueDisplay1.apply {
+            setBounds(2, 100, 300, 100)
+            font = Font("Arial", Font.PLAIN, 50)
         }
-        if (currentDisplay.isEmpty()) {
+        valueDisplay2.apply {
+            setBounds(2, 200, 300, 100)
+            font = Font("Arial", Font.PLAIN, 50)
+        }
+        valueDisplay3.apply {
+            setBounds(2, 300, 300, 100)
+            font = Font("Arial", Font.PLAIN, 50)
+        }
+        valueDisplay4.apply {
+            setBounds(2, 400, 300, 100)
+            font = Font("Arial", Font.PLAIN, 50)
+        }
+        valueDisplay5.apply {
+            setBounds(2, 500, 300, 100)
+            font = Font("Arial", Font.PLAIN, 50)
+        }
+        display.apply {
+            background = Color.GRAY
+            font = Font("Arial", Font.PLAIN, 50)
+            setBounds(300,0,300,100)
+        }
+        butClear.apply {
+            foreground = Color.RED
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(600,0,100,100)
+        }
+        butBack.apply {
+            foreground = Color.RED
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(500,400,100,100)
+        }
+        butEnter.apply {
+            foreground = Color.BLUE
+            font = Font("Arial", Font.BOLD, 19)
+            setBounds(300, 400, 100, 100)
+        }
+        butAdd.apply {
+            foreground = Color.GREEN
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(600, 100, 100, 100)
+        }
+        butSub.apply {
+            foreground = Color.GREEN
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(600, 200, 100, 100)
+        }
+        butMul.apply {
+            foreground = Color.GREEN
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(600, 300, 100, 100)
+        }
+        butDiv.apply {
+            foreground = Color.GREEN
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(600, 400, 100, 100)
+        }
+        but1.apply {
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(300, 100, 100, 100)
+        }
+        but2.apply {
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(400, 100, 100, 100)
+        }
+        but3.apply {
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(500, 100, 100, 100)
+        }
+        but4.apply {
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(300, 200, 100, 100)
+        }
+        but5.apply {
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(400, 200, 100, 100)
+        }
+        but6.apply {
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(500, 200, 100, 100)
+        }
+        but7.apply {
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(300, 300, 100, 100)
+        }
+        but8.apply {
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(400, 300, 100, 100)
+        }
+        but9.apply {
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(500, 300, 100, 100)
+        }
+        but0.apply {
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(400, 400, 100, 100)
+        }
+        butInt.apply {
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(300, 500, 100, 100)
+        }
+        butDecimal.apply {
+            font = Font("Arial", Font.BOLD, 50)
+            setBounds(400, 500, 100, 100)
+        }
+        inst.setBounds(510,375,150,350)
+        but1.addActionListener { checkIfResulted(); currentDisplay += "1"; refresh() }
+        but2.addActionListener { checkIfResulted(); currentDisplay += "2"; refresh() }
+        but3.addActionListener { checkIfResulted(); currentDisplay += "3"; refresh() }
+        but4.addActionListener { checkIfResulted(); currentDisplay += "4"; refresh() }
+        but5.addActionListener { checkIfResulted(); currentDisplay += "5"; refresh() }
+        but6.addActionListener { checkIfResulted(); currentDisplay += "6"; refresh() }
+        but7.addActionListener { checkIfResulted(); currentDisplay += "7"; refresh() }
+        but8.addActionListener { checkIfResulted(); currentDisplay += "8"; refresh() }
+        but9.addActionListener { checkIfResulted(); currentDisplay += "9"; refresh() }
+        but0.addActionListener { checkIfResulted(); currentDisplay += "0"; refresh() }
+        butDecimal.addActionListener {
+            checkIfResulted()
+            if (isADecimal) errorSound()
+            else {
+                currentDisplay += "."
+                refresh()
+                isADecimal = true
+            }
+        }
+        butInt.addActionListener {
+            checkIfResulted()
+            if (isAnInteger) errorSound()
+            if (currentDisplay != "") errorSound()
+            else {
+                currentDisplay += "-"
+                refresh()
+                isAnInteger
+            }
+        }
+        butClear.addActionListener {
+            currentDisplay = ""
+            refresh()
+            sideBarWipe()
             isADecimal = false
             isAnInteger = false
         }
-    }
-    butEnter.addActionListener {
-        if (numberOfValues == 5) {
-            errorSound()
-            JOptionPane.showMessageDialog(
-                null,
-                "Maximum of five values only.",
-                "Error",
-                JOptionPane.ERROR_MESSAGE
-            )
-        }
-        numberOfValues++
-        when (numberOfValues) {
-            1 -> value.setA(currentDisplay.toDouble())
-            2 -> value.setB(currentDisplay.toDouble())
-            3 -> value.setC(currentDisplay.toDouble())
-            4 -> value.setD(currentDisplay.toDouble())
-            5 -> value.setE(currentDisplay.toDouble())
-        }
-        sideBar()
-        currentDisplay = ""
-        refresh()
-        isADecimal = false
-        isAnInteger = false
-    }
-    butAdd.addActionListener {
-        currentDisplay = (value.getA()+value.getB()+value.getC()+value.getD()+value.getE()).toString()
-        refresh()
-        value.reset()
-        numberOfValues = 0
-        resulted = true
-    }
-    butSub.addActionListener {
-        currentDisplay = (value.getA()-value.getB()-value.getC()-value.getD()-value.getE()).toString()
-        refresh()
-        value.reset()
-        numberOfValues = 0
-        resulted = true
-    }
-    butMul.addActionListener {
-        when (numberOfValues) {
-            2 -> currentDisplay = (value.getA()*value.getB()).toString()
-            3 -> currentDisplay = (value.getA()*value.getB()*value.getC()).toString()
-            4 -> currentDisplay = (value.getA()*value.getB()*value.getC()*value.getD()).toString()
-            5 -> currentDisplay = (value.getA()*value.getB()*value.getC()*value.getD()*value.getE()).toString()
-        }
-        refresh()
-        value.reset()
-        numberOfValues = 0
-        resulted = true
-    }
-    butDiv.addActionListener {
-        when (numberOfValues) {
-            2 -> {
-                if (listOf(value.getA(),value.getB()).contains(0.0)) divBy0()
-                else currentDisplay = (value.getA()/value.getB()).toString()
+        butBack.addActionListener {
+            if (currentDisplay == "") errorSound()
+            else {
+                currentDisplay = currentDisplay.dropLast(1)
+                refresh()
             }
-            3 -> {
-                if (listOf(value.getA(),value.getB(),value.getC()).contains(0.0)) divBy0()
-                else currentDisplay = (value.getA()/value.getB()/value.getC()).toString()
-            }
-            4 -> {
-                if (listOf(value.getA(),value.getB(),value.getC(),value.getD()).contains(0.0)) divBy0()
-                else currentDisplay = (value.getA()/value.getB()/value.getC()/value.getD()).toString()
-            }
-            5 -> {
-                if (listOf(value.getA(),value.getB(),value.getC(),value.getD(),value.getE()).contains(0.0)) divBy0()
-                else currentDisplay = (value.getA()/value.getB()/value.getC()/value.getD()/value.getE()).toString()
+            if (currentDisplay.isEmpty()) {
+                isADecimal = false
+                isAnInteger = false
             }
         }
-        refresh()
-        value.reset()
-        numberOfValues = 0
-        resulted = true
-    }
-    val components = listOf(
-        but1, but2, but3, but4, but5, but6, but7, but8, but9, but0,
-        butBack, butClear, butAdd, butSub, butMul, butDiv, butEnter,
-        butInt, butDecimal, display, inst, valueLabel, valueDisplay1,
-        valueDisplay2, valueDisplay3, valueDisplay4, valueDisplay5
-    )
-    SwingUtilities.invokeLater {
+        butEnter.addActionListener {
+            if (numberOfValues == 5) {
+                errorSound()
+                JOptionPane.showMessageDialog(
+                    null,
+                    "Maximum of five values only.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                )
+            }
+            numberOfValues++
+            when (numberOfValues) {
+                1 -> value.setA(currentDisplay.toDouble())
+                2 -> value.setB(currentDisplay.toDouble())
+                3 -> value.setC(currentDisplay.toDouble())
+                4 -> value.setD(currentDisplay.toDouble())
+                5 -> value.setE(currentDisplay.toDouble())
+            }
+            sideBar()
+            currentDisplay = ""
+            refresh()
+            isADecimal = false
+            isAnInteger = false
+        }
+        butAdd.addActionListener {
+            currentDisplay = (value.getA()+value.getB()+value.getC()+value.getD()+value.getE()).toString()
+            refresh()
+            value.reset()
+            numberOfValues = 0
+            resulted = true
+        }
+        butSub.addActionListener {
+            currentDisplay = (value.getA()-value.getB()-value.getC()-value.getD()-value.getE()).toString()
+            refresh()
+            value.reset()
+            numberOfValues = 0
+            resulted = true
+        }
+        butMul.addActionListener {
+            when (numberOfValues) {
+                2 -> currentDisplay = (value.getA()*value.getB()).toString()
+                3 -> currentDisplay = (value.getA()*value.getB()*value.getC()).toString()
+                4 -> currentDisplay = (value.getA()*value.getB()*value.getC()*value.getD()).toString()
+                5 -> currentDisplay = (value.getA()*value.getB()*value.getC()*value.getD()*value.getE()).toString()
+            }
+            refresh()
+            value.reset()
+            numberOfValues = 0
+            resulted = true
+        }
+        butDiv.addActionListener {
+            when (numberOfValues) {
+                2 -> {
+                    if (listOf(value.getA(),value.getB()).contains(0.0)) divBy0()
+                    else currentDisplay = (value.getA()/value.getB()).toString()
+                }
+                3 -> {
+                    if (listOf(value.getA(),value.getB(),value.getC()).contains(0.0)) divBy0()
+                    else currentDisplay = (value.getA()/value.getB()/value.getC()).toString()
+                }
+                4 -> {
+                    if (listOf(value.getA(),value.getB(),value.getC(),value.getD()).contains(0.0)) divBy0()
+                    else currentDisplay = (value.getA()/value.getB()/value.getC()/value.getD()).toString()
+                }
+                5 -> {
+                    if (listOf(value.getA(),value.getB(),value.getC(),value.getD(),value.getE()).contains(0.0)) divBy0()
+                    else currentDisplay = (value.getA()/value.getB()/value.getC()/value.getD()/value.getE()).toString()
+                }
+            }
+            refresh()
+            value.reset()
+            numberOfValues = 0
+            resulted = true
+        }
+        val components = listOf(
+            but1, but2, but3, but4, but5, but6, but7, but8, but9, but0,
+            butBack, butClear, butAdd, butSub, butMul, butDiv, butEnter,
+            butInt, butDecimal, display, inst, valueLabel, valueDisplay1,
+            valueDisplay2, valueDisplay3, valueDisplay4, valueDisplay5
+        )
         w.apply {
             components.forEach {add(it)}
             setSize(714,637)
@@ -349,17 +353,19 @@ fun main() {
     }
 }
 fun checkIfResulted() {
-    if (resulted) {
-        currentDisplay = ""
-        refresh()
-        sideBarWipe()
-        resulted = false
-        isAnInteger = false
-        isADecimal = false
+    SwingUtilities.invokeLater {
+        if (resulted) {
+            currentDisplay = ""
+            refresh()
+            sideBarWipe()
+            resulted = false
+            isAnInteger = false
+            isADecimal = false
+        }
     }
 }
 fun refresh() {
-    display.text = currentDisplay
+    SwingUtilities.invokeLater{display.text = currentDisplay}
 }
 fun errorSound() {
     val toolkit = Toolkit.getDefaultToolkit()
@@ -375,9 +381,11 @@ fun divBy0() {
     )
 }
 fun sideBarWipe() {
-    valueDisplay1.text = ""
-    valueDisplay2.text = ""
-    valueDisplay3.text = ""
-    valueDisplay4.text = ""
-    valueDisplay5.text = ""
+    SwingUtilities.invokeLater {
+        valueDisplay1.text = ""
+        valueDisplay2.text = ""
+        valueDisplay3.text = ""
+        valueDisplay4.text = ""
+        valueDisplay5.text = ""
+    }
 }
