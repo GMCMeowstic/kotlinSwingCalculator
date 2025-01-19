@@ -15,13 +15,37 @@ import javax.swing.JOptionPane
 import javax.swing.SwingUtilities
 
 var currentDisp = ""
-var value1 = 0
-var value2 = 0
-var value3 = 0
-var value4 = 0
-var value5 = 0
+data class Values(
+    private var a: Int,
+    private var b: Int,
+    private var c: Int,
+    private var d: Int,
+    private var e: Int
+) {
+    init {
+        reset()
+    }
+    fun getA() = a
+    fun getB() = b
+    fun getC() = c
+    fun getD() = d
+    fun getE() = e
+    fun setA(i: Int) {a = i}
+    fun setB(i: Int) {b = i}
+    fun setC(i: Int) {c = i}
+    fun setD(i: Int) {d = i}
+    fun setE(i: Int) {e = i}
+    fun reset() {
+        a = 0
+        b = 0
+        c = 0
+        d = 0
+        e = 0
+    }
+}
 var isADecimal = false
 var isAnInteger = false
+var resulted = false
 var numberOfVals = 0
 val w = JFrame("calcGUI.kt")
 val but1 = JButton("1")
@@ -46,9 +70,7 @@ val butDecimal = JButton(".")
 val disp = JLabel()
 val inst = JLabel("<html>Press <font color='blue'>ENTER</font> to enter a<br>value<br>Press <font color='lime'>(+,-,x,/)</font> to<br>do calculate values.</html>")
 fun main() {
-    fun refresh() {
-        disp.text = currentDisp
-    }
+    val value = Values(0,0,0,0,0)
     disp.apply {
         font = Font("Arial", Font.PLAIN, 50)
         setBounds(2,0,400,100)
@@ -68,102 +90,87 @@ fun main() {
         font = Font("Arial", Font.BOLD, 19)
         setBounds(0, 400, 100, 100)
     }
-
     butAdd.apply {
         foreground = Color.GREEN
         font = Font("Arial", Font.BOLD, 50)
         setBounds(300, 100, 100, 100)
     }
-
     butSub.apply {
         foreground = Color.GREEN
         font = Font("Arial", Font.BOLD, 50)
         setBounds(300, 200, 100, 100)
     }
-
     butMul.apply {
         foreground = Color.GREEN
         font = Font("Arial", Font.BOLD, 50)
         setBounds(300, 300, 100, 100)
     }
-
     butDiv.apply {
         foreground = Color.GREEN
         font = Font("Arial", Font.BOLD, 50)
         setBounds(300, 400, 100, 100)
     }
-
     but1.apply {
         font = Font("Arial", Font.BOLD, 50)
         setBounds(0, 100, 100, 100)
     }
-
     but2.apply {
         font = Font("Arial", Font.BOLD, 50)
         setBounds(100, 100, 100, 100)
     }
-
     but3.apply {
         font = Font("Arial", Font.BOLD, 50)
         setBounds(200, 100, 100, 100)
     }
-
     but4.apply {
         font = Font("Arial", Font.BOLD, 50)
         setBounds(0, 200, 100, 100)
     }
-
     but5.apply {
         font = Font("Arial", Font.BOLD, 50)
         setBounds(100, 200, 100, 100)
     }
-
     but6.apply {
         font = Font("Arial", Font.BOLD, 50)
         setBounds(200, 200, 100, 100)
     }
-
     but7.apply {
         font = Font("Arial", Font.BOLD, 50)
         setBounds(0, 300, 100, 100)
     }
-
     but8.apply {
         font = Font("Arial", Font.BOLD, 50)
         setBounds(100, 300, 100, 100)
     }
-
     but9.apply {
         font = Font("Arial", Font.BOLD, 50)
         setBounds(200, 300, 100, 100)
     }
-
     but0.apply {
         font = Font("Arial", Font.BOLD, 50)
         setBounds(100, 400, 100, 100)
     }
-
     butInt.apply {
         font = Font("Arial", Font.BOLD, 50)
         setBounds(0, 500, 100, 100)
     }
-
     butDecimal.apply {
         font = Font("Arial", Font.BOLD, 50)
         setBounds(100, 500, 100, 100)
     }
     inst.setBounds(210,375,150,350)
-    but1.addActionListener { currentDisp += "1"; refresh() }
-    but2.addActionListener { currentDisp += "2"; refresh() }
-    but3.addActionListener { currentDisp += "3"; refresh() }
-    but4.addActionListener { currentDisp += "4"; refresh() }
-    but5.addActionListener { currentDisp += "5"; refresh() }
-    but6.addActionListener { currentDisp += "6"; refresh() }
-    but7.addActionListener { currentDisp += "7"; refresh() }
-    but8.addActionListener { currentDisp += "8"; refresh() }
-    but9.addActionListener { currentDisp += "9"; refresh() }
-    but0.addActionListener { currentDisp += "0"; refresh() }
+    but1.addActionListener { checkIfResulted(); currentDisp += "1"; refresh() }
+    but2.addActionListener { checkIfResulted(); currentDisp += "2"; refresh() }
+    but3.addActionListener { checkIfResulted(); currentDisp += "3"; refresh() }
+    but4.addActionListener { checkIfResulted(); currentDisp += "4"; refresh() }
+    but5.addActionListener { checkIfResulted(); currentDisp += "5"; refresh() }
+    but6.addActionListener { checkIfResulted(); currentDisp += "6"; refresh() }
+    but7.addActionListener { checkIfResulted(); currentDisp += "7"; refresh() }
+    but8.addActionListener { checkIfResulted(); currentDisp += "8"; refresh() }
+    but9.addActionListener { checkIfResulted(); currentDisp += "9"; refresh() }
+    but0.addActionListener { checkIfResulted(); currentDisp += "0"; refresh() }
     butDecimal.addActionListener {
+        checkIfResulted()
         if (isADecimal) errorSound()
         else {
             currentDisp += "."
@@ -172,6 +179,7 @@ fun main() {
         }
     }
     butInt.addActionListener {
+        checkIfResulted()
         if (isAnInteger) errorSound()
         if (currentDisp != "") errorSound()
         else {
@@ -209,11 +217,11 @@ fun main() {
         }
         numberOfVals++
         when (numberOfVals) {
-            1 -> value1 = currentDisp.toInt()
-            2 -> value2 = currentDisp.toInt()
-            3 -> value3 = currentDisp.toInt()
-            4 -> value4 = currentDisp.toInt()
-            5 -> value5 = currentDisp.toInt()
+            1 -> value.setA(currentDisp.toInt())
+            2 -> value.setB(currentDisp.toInt())
+            3 -> value.setC(currentDisp.toInt())
+            4 -> value.setD(currentDisp.toInt())
+            5 -> value.setE(currentDisp.toInt())
         }
         currentDisp = ""
         refresh()
@@ -221,46 +229,54 @@ fun main() {
         isAnInteger = false
     }
     butAdd.addActionListener {
-        currentDisp = (value1+value2+value3+value4+value5).toString()
+        currentDisp = (value.getA()+value.getB()+value.getC()+value.getD()+value.getE()).toString()
         refresh()
-        reset()
+        value.reset()
+        numberOfVals = 0
+        resulted = true
     }
     butSub.addActionListener {
-        currentDisp = (value1-value2-value3-value4-value5).toString()
+        currentDisp = (value.getA()-value.getB()-value.getC()-value.getD()-value.getE()).toString()
         refresh()
-        reset()
+        value.reset()
+        numberOfVals = 0
+        resulted = true
     }
     butMul.addActionListener {
         when (numberOfVals) {
-            2 -> currentDisp = (value1*value2).toString()
-            3 -> currentDisp = (value1*value2*value3).toString()
-            4 -> currentDisp = (value1*value2*value3*value4).toString()
-            5 -> currentDisp = (value1*value2*value3*value4*value5).toString()
+            2 -> currentDisp = (value.getA()*value.getB()).toString()
+            3 -> currentDisp = (value.getA()*value.getB()*value.getC()).toString()
+            4 -> currentDisp = (value.getA()*value.getB()*value.getC()*value.getD()).toString()
+            5 -> currentDisp = (value.getA()*value.getB()*value.getC()*value.getD()*value.getE()).toString()
         }
         refresh()
-        reset()
+        value.reset()
+        numberOfVals = 0
+        resulted = true
     }
     butDiv.addActionListener {
         when (numberOfVals) {
             2 -> {
-                if (listOf(value1,value2).contains(0)) divBy0()
-                else currentDisp = (value1/value2).toString()
+                if (listOf(value.getA(),value.getB()).contains(0)) divBy0()
+                else currentDisp = (value.getA()/value.getB()).toString()
             }
             3 -> {
-                if (listOf(value1,value2,value3).contains(0)) divBy0()
-                else currentDisp = (value1/value2/value3).toString()
+                if (listOf(value.getA(),value.getB(),value.getC()).contains(0)) divBy0()
+                else currentDisp = (value.getA()/value.getB()/value.getC()).toString()
             }
             4 -> {
-                if (listOf(value1,value2,value3,value4).contains(0)) divBy0()
-                else currentDisp = (value1/value2/value3/value4).toString()
+                if (listOf(value.getA(),value.getB(),value.getC(),value.getD()).contains(0)) divBy0()
+                else currentDisp = (value.getA()/value.getB()/value.getC()/value.getD()).toString()
             }
             5 -> {
-                if (listOf(value1,value2,value3,value4,value5).contains(0)) divBy0()
-                else currentDisp = (value1/value2/value3/value4/value5).toString()
+                if (listOf(value.getA(),value.getB(),value.getC(),value.getD(),value.getE()).contains(0)) divBy0()
+                else currentDisp = (value.getA()/value.getB()/value.getC()/value.getD()/value.getE()).toString()
             }
         }
         refresh()
-        reset()
+        value.reset()
+        numberOfVals = 0
+        resulted = true
     }
     val components = listOf(
         but1, but2, but3, but4, but5, but6, but7, but8, but9, but0,
@@ -278,6 +294,21 @@ fun main() {
             isVisible = true
         }
     }
+    while (true) {
+        println(resulted)
+    }
+}
+fun checkIfResulted() {
+    if (resulted) {
+        currentDisp = ""
+        refresh()
+        resulted = false
+        isAnInteger = false
+        isADecimal = false
+    }
+}
+fun refresh() {
+    disp.text = currentDisp
 }
 fun errorSound() {
     val toolkit = Toolkit.getDefaultToolkit()
@@ -291,11 +322,4 @@ fun divBy0() {
         "Error",
         JOptionPane.ERROR_MESSAGE
     )
-}
-fun reset() {
-    value1 = 0
-    value2 = 0
-    value3 = 0
-    value4 = 0
-    value5 = 0
 }
