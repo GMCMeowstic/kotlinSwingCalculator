@@ -294,9 +294,6 @@ fun main() {
             isVisible = true
         }
     }
-    while (true) {
-        println(resulted)
-    }
 }
 fun checkIfResulted() {
     if (resulted) {
