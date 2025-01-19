@@ -1,4 +1,9 @@
-/* Coded By GMCMarshy with emotional support from my boyfriend Frost */
+/*
+    Coded By GMCMarshy with emotional support from my boyfriend Frost
+    -----------------------------------------------------------------
+                               MIT License
+                       Do whatever the fuck you want
+ */
 
 import java.awt.Color
 import java.awt.Font
@@ -7,6 +12,7 @@ import javax.swing.JButton
 import javax.swing.JFrame
 import javax.swing.JLabel
 import javax.swing.JOptionPane
+import javax.swing.SwingUtilities
 
 var currentDisp = ""
 var value1 = 0
@@ -40,7 +46,13 @@ val butDecimal = JButton(".")
 val disp = JLabel()
 val inst = JLabel("<html>Press <font color='blue'>ENTER</font> to enter a<br>value<br>Press <font color='lime'>(+,-,x,/)</font> to<br>do calculate values.</html>")
 fun main() {
-    disp.font = Font("Arial", Font.PLAIN, 50)
+    fun refresh() {
+        disp.text = currentDisp
+    }
+    disp.apply {
+        font = Font("Arial", Font.PLAIN, 50)
+        setBounds(2,0,400,100)
+    }
     butClear.apply {
         foreground = Color.RED
         font = Font("Arial", Font.BOLD, 50)
@@ -140,23 +152,22 @@ fun main() {
         font = Font("Arial", Font.BOLD, 50)
         setBounds(100, 500, 100, 100)
     }
-    disp.setBounds(2,0,400,100)
     inst.setBounds(210,375,150,350)
-    but1.addActionListener { currentDisp += "1"; refresh(currentDisp) }
-    but2.addActionListener { currentDisp += "2"; refresh(currentDisp) }
-    but3.addActionListener { currentDisp += "3"; refresh(currentDisp) }
-    but4.addActionListener { currentDisp += "4"; refresh(currentDisp) }
-    but5.addActionListener { currentDisp += "5"; refresh(currentDisp) }
-    but6.addActionListener { currentDisp += "6"; refresh(currentDisp) }
-    but7.addActionListener { currentDisp += "7"; refresh(currentDisp) }
-    but8.addActionListener { currentDisp += "8"; refresh(currentDisp) }
-    but9.addActionListener { currentDisp += "9"; refresh(currentDisp) }
-    but0.addActionListener { currentDisp += "0"; refresh(currentDisp) }
+    but1.addActionListener { currentDisp += "1"; refresh() }
+    but2.addActionListener { currentDisp += "2"; refresh() }
+    but3.addActionListener { currentDisp += "3"; refresh() }
+    but4.addActionListener { currentDisp += "4"; refresh() }
+    but5.addActionListener { currentDisp += "5"; refresh() }
+    but6.addActionListener { currentDisp += "6"; refresh() }
+    but7.addActionListener { currentDisp += "7"; refresh() }
+    but8.addActionListener { currentDisp += "8"; refresh() }
+    but9.addActionListener { currentDisp += "9"; refresh() }
+    but0.addActionListener { currentDisp += "0"; refresh() }
     butDecimal.addActionListener {
         if (isADecimal) errorSound()
         else {
             currentDisp += "."
-            refresh(currentDisp)
+            refresh()
             isADecimal = true
         }
     }
@@ -165,13 +176,13 @@ fun main() {
         if (currentDisp != "") errorSound()
         else {
             currentDisp += "-"
-            refresh(currentDisp)
+            refresh()
             isAnInteger
         }
     }
     butClear.addActionListener {
         currentDisp = ""
-        refresh(currentDisp)
+        refresh()
         isADecimal = false
         isAnInteger = false
     }
@@ -179,7 +190,7 @@ fun main() {
         if (currentDisp == "") errorSound()
         else {
             currentDisp = currentDisp.dropLast(1)
-            refresh(currentDisp)
+            refresh()
         }
         if (currentDisp.isEmpty()) {
             isADecimal = false
@@ -205,17 +216,19 @@ fun main() {
             5 -> value5 = currentDisp.toInt()
         }
         currentDisp = ""
-        refresh(currentDisp)
+        refresh()
         isADecimal = false
         isAnInteger = false
     }
     butAdd.addActionListener {
         currentDisp = (value1+value2+value3+value4+value5).toString()
-        refresh(currentDisp)
+        refresh()
+        reset()
     }
     butSub.addActionListener {
         currentDisp = (value1-value2-value3-value4-value5).toString()
-        refresh(currentDisp)
+        refresh()
+        reset()
     }
     butMul.addActionListener {
         when (numberOfVals) {
@@ -224,7 +237,8 @@ fun main() {
             4 -> currentDisp = (value1*value2*value3*value4).toString()
             5 -> currentDisp = (value1*value2*value3*value4*value5).toString()
         }
-        refresh(currentDisp)
+        refresh()
+        reset()
     }
     butDiv.addActionListener {
         when (numberOfVals) {
@@ -245,23 +259,25 @@ fun main() {
                 else currentDisp = (value1/value2/value3/value4/value5).toString()
             }
         }
-        refresh(currentDisp)
+        refresh()
+        reset()
     }
     val components = listOf(
         but1, but2, but3, but4, but5, but6, but7, but8, but9, but0,
         butBack, butClear, butAdd, butSub, butMul, butDiv, butEnter,
         butInt, butDecimal, disp, inst
     )
-    components.forEach { w.add(it) }
-    w.setSize(414,637)
-    w.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-    w.layout = null
-    w.isResizable = false
-    w.setLocationRelativeTo(null)
-    w.isVisible = true
-}
-fun refresh(text: String) {
-    disp.text = text
+    SwingUtilities.invokeLater {
+        w.apply {
+            components.forEach {add(it)}
+            setSize(414,637)
+            defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+            layout = null
+            isResizable = false
+            setLocationRelativeTo(null)
+            isVisible = true
+        }
+    }
 }
 fun errorSound() {
     val toolkit = Toolkit.getDefaultToolkit()
@@ -271,8 +287,15 @@ fun divBy0() {
     errorSound()
     JOptionPane.showMessageDialog(
         null,
-        "Cannot divide by zero. You fucking idiot.",
+        "You cant divide by 0, you fucking retard.",
         "Error",
         JOptionPane.ERROR_MESSAGE
     )
+}
+fun reset() {
+    value1 = 0
+    value2 = 0
+    value3 = 0
+    value4 = 0
+    value5 = 0
 }
