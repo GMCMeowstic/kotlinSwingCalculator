@@ -11,11 +11,10 @@ import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics
 import java.awt.Toolkit
-import javax.swing.JButton
-import javax.swing.JFrame
-import javax.swing.JLabel
-import javax.swing.JOptionPane
-import javax.swing.SwingUtilities
+import javax.swing.*
+import kotlin.math.pow
+import kotlin.math.sqrt
+import kotlin.system.exitProcess
 
 var currentDisplay = ""
 data class Values(
@@ -51,6 +50,12 @@ var isAnInteger = false
 var resulted = false
 var numberOfValues = 0
 val w = JFrame("calcGUI.kt")
+val menu = JMenuBar()
+val fileMenu = JMenu("File")
+val helpMenu = JMenu("Help")
+val exit = JMenuItem("Exit                      Alt+F4")
+val settings = JMenuItem("Preferences")
+val instructions = JMenuItem("Instructions")
 val but1 = JButton("1")
 val but2 = JButton("2")
 val but3 = JButton("3")
@@ -61,6 +66,8 @@ val but7 = JButton("7")
 val but8 = JButton("8")
 val but9 = JButton("9")
 val but0 = JButton("0")
+val butSqrt = JButton("√")
+val butExponent = JButton("^")
 val butClear = JButton("C")
 val butBack = JButton("<X")
 val butAdd = JButton("+")
@@ -83,7 +90,6 @@ val display = object : JLabel() {
         super.paintComponent(g)
     }
 }
-val inst = JLabel("<html>Press <font color='blue'>ENTER</font> to enter a<br>value<br>Press <font color='lime'>(+,-,x,/)</font> to<br>do calculate values.</html>")
 fun main() {
     SwingUtilities.invokeLater {
         val value = Values(0.0,0.0,0.0,0.0,0.0)
@@ -165,6 +171,16 @@ fun main() {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(600, 400, 100, 100)
         }
+        butSqrt.apply {
+            foreground = Color.GREEN
+            font = Font("Arial", Font.BOLD,50)
+            setBounds(600,500,100,100)
+        }
+        butExponent.apply {
+            foreground = Color.GREEN
+            font = Font("Arial", Font.BOLD,50)
+            setBounds(500,500,100,100)
+        }
         but1.apply {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(300, 100, 100, 100)
@@ -213,7 +229,6 @@ fun main() {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(400, 500, 100, 100)
         }
-        inst.setBounds(510,375,150,350)
         but1.addActionListener { checkIfResulted(); currentDisplay += "1"; refresh() }
         but2.addActionListener { checkIfResulted(); currentDisplay += "2"; refresh() }
         but3.addActionListener { checkIfResulted(); currentDisplay += "3"; refresh() }
@@ -245,6 +260,7 @@ fun main() {
         }
         butClear.addActionListener {
             currentDisplay = ""
+            value.reset()
             refresh()
             sideBarWipe()
             isADecimal = false
@@ -287,17 +303,17 @@ fun main() {
         }
         butAdd.addActionListener {
             currentDisplay = (value.getA()+value.getB()+value.getC()+value.getD()+value.getE()).toString()
-            refresh()
             value.reset()
             numberOfValues = 0
             resulted = true
+            refresh()
         }
         butSub.addActionListener {
             currentDisplay = (value.getA()-value.getB()-value.getC()-value.getD()-value.getE()).toString()
-            refresh()
             value.reset()
             numberOfValues = 0
             resulted = true
+            refresh()
         }
         butMul.addActionListener {
             when (numberOfValues) {
@@ -306,10 +322,10 @@ fun main() {
                 4 -> currentDisplay = (value.getA()*value.getB()*value.getC()*value.getD()).toString()
                 5 -> currentDisplay = (value.getA()*value.getB()*value.getC()*value.getD()*value.getE()).toString()
             }
-            refresh()
             value.reset()
             numberOfValues = 0
             resulted = true
+            refresh()
         }
         butDiv.addActionListener {
             when (numberOfValues) {
@@ -330,20 +346,66 @@ fun main() {
                     else currentDisplay = (value.getA()/value.getB()/value.getC()/value.getD()/value.getE()).toString()
                 }
             }
-            refresh()
             value.reset()
             numberOfValues = 0
             resulted = true
+            refresh()
+        }
+        butSqrt.addActionListener {
+            if (numberOfValues != 1) validValuesNumError(1)
+            else {
+                currentDisplay = sqrt(value.getA()).toString()
+            }
+            numberOfValues = 0
+            resulted = true
+            refresh()
+        }
+        butExponent.addActionListener {
+            if (numberOfValues != 2)  validValuesNumError(2)
+            else {
+                currentDisplay = value.getA().pow(value.getB()).toString()
+            }
+            resulted = true
+            refresh()
+        }
+        settings.addActionListener {
+            val s = JFrame("Preferences")
+            val text = JLabel("still in development")
+            s.setSize(350,200)
+            s.add(text)
+            s.defaultCloseOperation = JFrame.HIDE_ON_CLOSE
+            s.isResizable = false
+            s.setLocationRelativeTo(null)
+            s.isVisible = true
+        }
+        exit.addActionListener { exitProcess(0) }
+        instructions.addActionListener {
+            val f = JFrame("Instructions")
+            val inst = JLabel("<html>Press <font color='blue'>ENTER</font> to enter a<br>value<br>Press <font color='lime'>(+,-,x,/)</font> to<br>do calculate values.</html>")
+            inst.setBounds(0,0,350,250)
+            inst.font = Font("Arial", Font.BOLD, 25)
+            f.add(inst)
+            f.setSize(350,175)
+            f.defaultCloseOperation = JFrame.HIDE_ON_CLOSE
+            f.isResizable = false
+            f.setLocationRelativeTo(null)
+            f.isVisible = true
         }
         val components = listOf(
             but1, but2, but3, but4, but5, but6, but7, but8, but9, but0,
-            butBack, butClear, butAdd, butSub, butMul, butDiv, butEnter,
-            butInt, butDecimal, display, inst, valueLabel, valueDisplay1,
-            valueDisplay2, valueDisplay3, valueDisplay4, valueDisplay5
+            butBack, butClear, butAdd, butSub, butMul, butDiv, butSqrt,
+            butExponent, butEnter, butInt, butDecimal, display, valueLabel,
+            valueDisplay1, valueDisplay2, valueDisplay3, valueDisplay4, valueDisplay5
         )
+        fileMenu.add(settings)
+        fileMenu.add(exit)
+        helpMenu.add(instructions)
+        menu.add(fileMenu)
+        menu.add(helpMenu)
         w.apply {
             components.forEach {add(it)}
-            setSize(714,637)
+            setSize(714,660)
+            jMenuBar = menu
             defaultCloseOperation = JFrame.EXIT_ON_CLOSE
             layout = null
             isResizable = false
@@ -365,7 +427,14 @@ fun checkIfResulted() {
     }
 }
 fun refresh() {
-    SwingUtilities.invokeLater{display.text = currentDisplay}
+    SwingUtilities.invokeLater{
+        if (resulted) {
+            display.text = currentDisplay.take(10)
+        } else {
+            if (numberOfValues == 10) errorSound()
+            else display.text = currentDisplay
+        }
+    }
 }
 fun errorSound() {
     val toolkit = Toolkit.getDefaultToolkit()
@@ -376,6 +445,15 @@ fun divBy0() {
     JOptionPane.showMessageDialog(
         null,
         "You cant divide by 0, you fucking retard.",
+        "Error",
+        JOptionPane.ERROR_MESSAGE
+    )
+}
+fun validValuesNumError(x: Int) {
+    errorSound()
+    JOptionPane.showMessageDialog(
+        null,
+        "Only $x value can be operated.",
         "Error",
         JOptionPane.ERROR_MESSAGE
     )
