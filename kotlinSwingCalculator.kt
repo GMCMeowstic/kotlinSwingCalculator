@@ -22,7 +22,12 @@ data class Values(
     private var b: Double,
     private var c: Double,
     private var d: Double,
-    private var e: Double
+    private var e: Double,
+    private var aExponent: Double,
+    private var bExponent: Double,
+    private var cExponent: Double,
+    private var dExponent: Double,
+    private var eExponent: Double
 ) {
     init {
         reset()
@@ -38,11 +43,11 @@ data class Values(
     fun setD(i: Double) {d = i}
     fun setE(i: Double) {e = i}
     fun reset() {
-        a = 0.0
-        b = 0.0
-        c = 0.0
-        d = 0.0
-        e = 0.0
+        a = 0.0; aExponent = 0.0
+        b = 0.0; bExponent = 0.0
+        c = 0.0; cExponent = 0.0
+        d = 0.0; dExponent = 0.0
+        e = 0.0; eExponent = 0.0
     }
 }
 var isADecimal = false
@@ -92,7 +97,7 @@ val display = object : JLabel() {
 }
 fun main() {
     SwingUtilities.invokeLater {
-        val value = Values(0.0,0.0,0.0,0.0,0.0)
+        val value = Values(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)
         fun sideBar() {
             val a = value.getA()
             val b = value.getB()
@@ -241,25 +246,31 @@ fun main() {
         but0.addActionListener { checkIfResulted(); currentDisplay += "0"; refresh() }
         butDecimal.addActionListener {
             checkIfResulted()
-            if (isADecimal) errorSound()
-            else {
+            if (isADecimal) {
+                errorSound()
+                return@addActionListener
+            }
                 currentDisplay += "."
                 refresh()
                 isADecimal = true
-            }
         }
         butInt.addActionListener {
             checkIfResulted()
-            if (isAnInteger) errorSound()
-            if (currentDisplay != "") errorSound()
-            else {
+            if (isAnInteger) {
+                errorSound()
+                return@addActionListener
+            }
+            if (currentDisplay != "") {
+                errorSound()
+                return@addActionListener
+            }
                 currentDisplay += "-"
                 refresh()
                 isAnInteger
-            }
         }
         butClear.addActionListener {
             currentDisplay = ""
+            numberOfValues = 0
             value.reset()
             refresh()
             sideBarWipe()
@@ -267,17 +278,32 @@ fun main() {
             isAnInteger = false
         }
         butBack.addActionListener {
-            if (currentDisplay == "") errorSound()
-            else {
-                currentDisplay = currentDisplay.dropLast(1)
-                refresh()
+            if (currentDisplay == "") {
+                errorSound()
+                return@addActionListener
             }
+            currentDisplay = currentDisplay.dropLast(1)
+            refresh()
             if (currentDisplay.isEmpty()) {
                 isADecimal = false
                 isAnInteger = false
             }
         }
         butEnter.addActionListener {
+            if (currentDisplay == "") {
+                errorSound()
+                return@addActionListener
+            }
+            if (currentDisplay.length > 10) {
+                errorSound()
+                JOptionPane.showMessageDialog(
+                    null,
+                    "Maximum of 10 characters per input.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                )
+                return@addActionListener
+            }
             if (numberOfValues == 5) {
                 errorSound()
                 JOptionPane.showMessageDialog(
@@ -286,6 +312,7 @@ fun main() {
                     "Error",
                     JOptionPane.ERROR_MESSAGE
                 )
+                return@addActionListener
             }
             numberOfValues++
             when (numberOfValues) {
@@ -352,10 +379,11 @@ fun main() {
             refresh()
         }
         butSqrt.addActionListener {
-            if (numberOfValues != 1) validValuesNumError(1)
-            else {
-                currentDisplay = sqrt(value.getA()).toString()
+            if (numberOfValues != 1) {
+                validValuesNumError(1)
+                return@addActionListener
             }
+            currentDisplay = sqrt(value.getA()).toString()
             numberOfValues = 0
             resulted = true
             refresh()
@@ -413,6 +441,9 @@ fun main() {
             isVisible = true
         }
     }
+    while (true) {
+        println(numberOfValues)
+    }
 }
 fun checkIfResulted() {
     SwingUtilities.invokeLater {
@@ -424,16 +455,20 @@ fun checkIfResulted() {
             isAnInteger = false
             isADecimal = false
         }
+        else return@invokeLater
     }
 }
 fun refresh() {
     SwingUtilities.invokeLater{
         if (resulted) {
             display.text = currentDisplay.take(10)
-        } else {
-            if (numberOfValues == 10) errorSound()
-            else display.text = currentDisplay
+            return@invokeLater
         }
+        if (numberOfValues == 10) {
+            errorSound()
+            return@invokeLater
+        }
+        display.text = currentDisplay
     }
 }
 fun errorSound() {
