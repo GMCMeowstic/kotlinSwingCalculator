@@ -61,6 +61,7 @@ val helpMenu = JMenu("Help")
 val exit = JMenuItem("Exit                      Alt+F4")
 val settings = JMenuItem("Preferences")
 val instructions = JMenuItem("Instructions")
+val credits = JMenuItem("Credits")
 val but1 = JButton("1")
 val but2 = JButton("2")
 val but3 = JButton("3")
@@ -105,11 +106,11 @@ fun main() {
             val d = value.getD()
             val e = value.getE()
             SwingUtilities.invokeLater {
-                if (a != 0.0) valueDisplay1.text = a.toString()
-                if (b != 0.0) valueDisplay2.text = b.toString()
-                if (c != 0.0) valueDisplay3.text = c.toString()
-                if (d != 0.0) valueDisplay4.text = d.toString()
-                if (e != 0.0) valueDisplay5.text = e.toString()
+                if (numberOfValues >= 1) valueDisplay1.text = a.toString()
+                if (numberOfValues >= 2) valueDisplay2.text = b.toString()
+                if (numberOfValues >= 3) valueDisplay3.text = c.toString()
+                if (numberOfValues >= 4) valueDisplay4.text = d.toString()
+                if (numberOfValues >= 5) valueDisplay5.text = e.toString()
             }
         }
         valueLabel.apply {
@@ -145,94 +146,115 @@ fun main() {
             foreground = Color.RED
             font = Font("Arial", Font.BOLD, 50)
             setBounds(600,0,100,100)
+            isFocusable = false
         }
         butBack.apply {
             foreground = Color.RED
             font = Font("Arial", Font.BOLD, 50)
             setBounds(500,400,100,100)
+            isFocusable = false
         }
         butEnter.apply {
             foreground = Color.BLUE
             font = Font("Arial", Font.BOLD, 19)
             setBounds(300, 400, 100, 100)
+            isFocusable = false
         }
         butAdd.apply {
             foreground = Color.GREEN
             font = Font("Arial", Font.BOLD, 50)
             setBounds(600, 100, 100, 100)
+            isFocusable = false
         }
         butSub.apply {
             foreground = Color.GREEN
             font = Font("Arial", Font.BOLD, 50)
             setBounds(600, 200, 100, 100)
+            isFocusable = false
         }
         butMul.apply {
             foreground = Color.GREEN
             font = Font("Arial", Font.BOLD, 50)
             setBounds(600, 300, 100, 100)
+            isFocusable = false
         }
         butDiv.apply {
             foreground = Color.GREEN
             font = Font("Arial", Font.BOLD, 50)
             setBounds(600, 400, 100, 100)
+            isFocusable = false
         }
         butSqrt.apply {
             foreground = Color.GREEN
             font = Font("Arial", Font.BOLD,50)
             setBounds(600,500,100,100)
+            isFocusable = false
         }
         butExponent.apply {
             foreground = Color.GREEN
             font = Font("Arial", Font.BOLD,50)
             setBounds(500,500,100,100)
+            isFocusable = false
         }
         but1.apply {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(300, 100, 100, 100)
+            isFocusable = false
         }
         but2.apply {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(400, 100, 100, 100)
+            isFocusable = false
         }
         but3.apply {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(500, 100, 100, 100)
+            isFocusable = false
         }
         but4.apply {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(300, 200, 100, 100)
+            isFocusable = false
         }
         but5.apply {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(400, 200, 100, 100)
+            isFocusable = false
         }
         but6.apply {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(500, 200, 100, 100)
+            isFocusable = false
         }
         but7.apply {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(300, 300, 100, 100)
+            isFocusable = false
         }
         but8.apply {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(400, 300, 100, 100)
+            isFocusable = false
         }
         but9.apply {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(500, 300, 100, 100)
+            isFocusable = false
         }
         but0.apply {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(400, 400, 100, 100)
+            isFocusable = false
         }
         butInt.apply {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(300, 500, 100, 100)
+            isFocusable = false
         }
         butDecimal.apply {
             font = Font("Arial", Font.BOLD, 50)
             setBounds(400, 500, 100, 100)
+            isFocusable = false
         }
         but1.addActionListener { checkIfResulted(); currentDisplay += "1"; refresh() }
         but2.addActionListener { checkIfResulted(); currentDisplay += "2"; refresh() }
@@ -250,9 +272,9 @@ fun main() {
                 errorSound()
                 return@addActionListener
             }
-                currentDisplay += "."
-                refresh()
-                isADecimal = true
+            currentDisplay += "."
+            refresh()
+            isADecimal = true
         }
         butInt.addActionListener {
             checkIfResulted()
@@ -264,9 +286,9 @@ fun main() {
                 errorSound()
                 return@addActionListener
             }
-                currentDisplay += "-"
-                refresh()
-                isAnInteger
+            currentDisplay += "-"
+            refresh()
+            isAnInteger
         }
         butClear.addActionListener {
             currentDisplay = ""
@@ -302,6 +324,10 @@ fun main() {
                     "Error",
                     JOptionPane.ERROR_MESSAGE
                 )
+                return@addActionListener
+            }
+            if (currentDisplay.all{it == '.'} || currentDisplay.all{it=='-'}) {
+                errorSound()
                 return@addActionListener
             }
             if (numberOfValues == 5) {
@@ -396,6 +422,18 @@ fun main() {
             resulted = true
             refresh()
         }
+        credits.addActionListener {
+            val c = JFrame("Credits")
+            val text = JLabel("<html>GMCMarshy - The actual code itself<br>Frost - Emotional Support</html>")
+            text.setBounds(0,0,350,250)
+            text.font = Font("Arial", Font.BOLD, 25)
+            c.setSize(350,200)
+            c.add(text)
+            c.defaultCloseOperation = JFrame.HIDE_ON_CLOSE
+            c.isResizable = false
+            c.setLocationRelativeTo(null)
+            c.isVisible = true
+        }
         settings.addActionListener {
             val s = JFrame("Preferences")
             val text = JLabel("still in development")
@@ -425,6 +463,7 @@ fun main() {
             butExponent, butEnter, butInt, butDecimal, display, valueLabel,
             valueDisplay1, valueDisplay2, valueDisplay3, valueDisplay4, valueDisplay5
         )
+        fileMenu.add(credits)
         fileMenu.add(settings)
         fileMenu.add(exit)
         helpMenu.add(instructions)
@@ -440,9 +479,6 @@ fun main() {
             setLocationRelativeTo(null)
             isVisible = true
         }
-    }
-    while (true) {
-        println(numberOfValues)
     }
 }
 fun checkIfResulted() {
