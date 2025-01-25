@@ -7,10 +7,8 @@
 
 // This shit was coded by a 14-year-old Filipino Furry Femboy so don't expect much.
 
-import java.awt.Color
-import java.awt.Font
-import java.awt.Graphics
-import java.awt.Toolkit
+import java.awt.*
+import java.net.URI
 import javax.swing.*
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -58,10 +56,12 @@ val w = JFrame("calcGUI.kt")
 val menu = JMenuBar()
 val fileMenu = JMenu("File")
 val helpMenu = JMenu("Help")
+val aboutMenu = JMenu("About this shit")
 val exit = JMenuItem("Exit                      Alt+F4")
 val settings = JMenuItem("Preferences")
 val instructions = JMenuItem("Instructions")
 val credits = JMenuItem("Credits")
+val github = JMenuItem("Github")
 val but1 = JButton("1")
 val but2 = JButton("2")
 val but3 = JButton("3")
@@ -75,12 +75,12 @@ val but0 = JButton("0")
 val butSqrt = JButton("√")
 val butExponent = JButton("^")
 val butClear = JButton("C")
-val butBack = JButton("<X")
+val butBack = JButton("←")
 val butAdd = JButton("+")
 val butSub = JButton("-")
 val butMul = JButton("x")
 val butDiv = JButton("/")
-val butEnter = JButton("ENTER")
+val butEnter = JButton("E")
 val butInt = JButton("+/-")
 val butDecimal = JButton(".")
 val valueLabel = JLabel("Values Entered:")
@@ -118,156 +118,160 @@ fun main() {
             font = Font("Arial", Font.PLAIN, 40)
         }
         valueDisplay1.apply {
-            setBounds(2, 100, 300, 100)
+            setBounds(2, 100, 300, 60)
             font = Font("Arial", Font.PLAIN, 50)
         }
         valueDisplay2.apply {
-            setBounds(2, 200, 300, 100)
+            setBounds(2, 160, 300, 60)
             font = Font("Arial", Font.PLAIN, 50)
         }
         valueDisplay3.apply {
-            setBounds(2, 300, 300, 100)
+            setBounds(2, 220, 300, 60)
             font = Font("Arial", Font.PLAIN, 50)
         }
         valueDisplay4.apply {
-            setBounds(2, 400, 300, 100)
+            setBounds(2, 280, 300, 60)
             font = Font("Arial", Font.PLAIN, 50)
         }
         valueDisplay5.apply {
-            setBounds(2, 500, 300, 100)
+            setBounds(2, 340, 300, 60)
             font = Font("Arial", Font.PLAIN, 50)
         }
         display.apply {
             background = Color.GRAY
             font = Font("Arial", Font.PLAIN, 50)
-            setBounds(300,0,300,100)
+            setBounds(300,0,420,100)
         }
         butClear.apply {
             foreground = Color.RED
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(600,0,100,100)
+            font = Font("Arial", Font.BOLD, 37)
+            setBounds(660,100,60,100)
             isFocusable = false
         }
         butBack.apply {
             foreground = Color.RED
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(500,400,100,100)
+            font = Font("Arial", Font.BOLD, 26)
+            setBounds(660,200,60,100)
             isFocusable = false
         }
         butEnter.apply {
             foreground = Color.BLUE
-            font = Font("Arial", Font.BOLD, 19)
-            setBounds(300, 400, 100, 100)
+            font = Font("Arial", Font.BOLD, 37)
+            setBounds(660, 300, 60, 100)
             isFocusable = false
         }
         butAdd.apply {
             foreground = Color.GREEN
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(600, 100, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(570, 100, 90, 60)
             isFocusable = false
         }
         butSub.apply {
             foreground = Color.GREEN
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(600, 200, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(570, 160, 90, 60)
             isFocusable = false
         }
         butMul.apply {
             foreground = Color.GREEN
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(600, 300, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(570, 220, 90, 60)
             isFocusable = false
         }
         butDiv.apply {
             foreground = Color.GREEN
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(600, 400, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(570, 280, 90, 60)
             isFocusable = false
         }
         butSqrt.apply {
             foreground = Color.GREEN
-            font = Font("Arial", Font.BOLD,50)
-            setBounds(600,500,100,100)
+            font = Font("Arial", Font.BOLD,45)
+            setBounds(570,340,90,60)
             isFocusable = false
         }
         butExponent.apply {
             foreground = Color.GREEN
-            font = Font("Arial", Font.BOLD,50)
-            setBounds(500,500,100,100)
+            font = Font("Arial", Font.BOLD,60)
+            setBounds(480,340,90,60)
             isFocusable = false
         }
         but1.apply {
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(300, 100, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(300, 100, 90, 60)
             isFocusable = false
         }
         but2.apply {
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(400, 100, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(390, 100, 90, 60)
             isFocusable = false
         }
         but3.apply {
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(500, 100, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(480, 100, 90, 60)
             isFocusable = false
         }
         but4.apply {
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(300, 200, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(300, 160, 90, 60)
             isFocusable = false
         }
         but5.apply {
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(400, 200, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(390, 160, 90, 60)
             isFocusable = false
         }
         but6.apply {
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(500, 200, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(480, 160, 90, 60)
             isFocusable = false
         }
         but7.apply {
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(300, 300, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(300, 220, 90, 60)
             isFocusable = false
         }
         but8.apply {
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(400, 300, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(390, 220, 90, 60)
             isFocusable = false
         }
         but9.apply {
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(500, 300, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(480, 220, 90, 60)
             isFocusable = false
         }
         but0.apply {
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(400, 400, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(390, 280, 90, 60)
             isFocusable = false
         }
         butInt.apply {
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(300, 500, 100, 100)
+            font = Font("Arial", Font.BOLD, 45)
+            setBounds(300, 280, 90, 60)
             isFocusable = false
         }
         butDecimal.apply {
-            font = Font("Arial", Font.BOLD, 50)
-            setBounds(400, 500, 100, 100)
+            font = Font("Arial", Font.BOLD, 60)
+            setBounds(480, 280, 90, 60)
             isFocusable = false
         }
-        but1.addActionListener { checkIfResulted(); currentDisplay += "1"; refresh() }
-        but2.addActionListener { checkIfResulted(); currentDisplay += "2"; refresh() }
-        but3.addActionListener { checkIfResulted(); currentDisplay += "3"; refresh() }
-        but4.addActionListener { checkIfResulted(); currentDisplay += "4"; refresh() }
-        but5.addActionListener { checkIfResulted(); currentDisplay += "5"; refresh() }
-        but6.addActionListener { checkIfResulted(); currentDisplay += "6"; refresh() }
-        but7.addActionListener { checkIfResulted(); currentDisplay += "7"; refresh() }
-        but8.addActionListener { checkIfResulted(); currentDisplay += "8"; refresh() }
-        but9.addActionListener { checkIfResulted(); currentDisplay += "9"; refresh() }
-        but0.addActionListener { checkIfResulted(); currentDisplay += "0"; refresh() }
+        but1.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "1"; refresh() }
+        but2.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "2"; refresh() }
+        but3.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "3"; refresh() }
+        but4.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "4"; refresh() }
+        but5.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "5"; refresh() }
+        but6.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "6"; refresh() }
+        but7.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "7"; refresh() }
+        but8.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "8"; refresh() }
+        but9.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "9"; refresh() }
+        but0.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "0"; refresh() }
         butDecimal.addActionListener {
             checkIfResulted()
+            if (displayLimitCheck()) {
+                errorSound()
+                return@addActionListener
+            }
             if (isADecimal) {
                 errorSound()
                 return@addActionListener
@@ -278,6 +282,10 @@ fun main() {
         }
         butInt.addActionListener {
             checkIfResulted()
+            if (displayLimitCheck()) {
+                errorSound()
+                return@addActionListener
+            }
             if (isAnInteger) {
                 errorSound()
                 return@addActionListener
@@ -316,11 +324,11 @@ fun main() {
                 errorSound()
                 return@addActionListener
             }
-            if (currentDisplay.length > 10) {
+            if (currentDisplay.length > 15) {
                 errorSound()
                 JOptionPane.showMessageDialog(
                     null,
-                    "Maximum of 10 characters per input.",
+                    "Maximum of 15 characters per input.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE
                 )
@@ -447,7 +455,7 @@ fun main() {
         exit.addActionListener { exitProcess(0) }
         instructions.addActionListener {
             val f = JFrame("Instructions")
-            val inst = JLabel("<html>Press <font color='blue'>ENTER</font> to enter a<br>value<br>Press <font color='lime'>(+,-,x,/)</font> to<br>do calculate values.</html>")
+            val inst = JLabel("<html>Press <font color='blue'>E</font> to enter a<br>value<br>Press <font color='lime'>(+,-,x,/,^,√)</font> to<br>calculate the values.</html>")
             inst.setBounds(0,0,350,250)
             inst.font = Font("Arial", Font.BOLD, 25)
             f.add(inst)
@@ -457,21 +465,24 @@ fun main() {
             f.setLocationRelativeTo(null)
             f.isVisible = true
         }
+        github.addActionListener {openGithub()}
         val components = listOf(
             but1, but2, but3, but4, but5, but6, but7, but8, but9, but0,
             butBack, butClear, butAdd, butSub, butMul, butDiv, butSqrt,
             butExponent, butEnter, butInt, butDecimal, display, valueLabel,
             valueDisplay1, valueDisplay2, valueDisplay3, valueDisplay4, valueDisplay5
         )
-        fileMenu.add(credits)
         fileMenu.add(settings)
         fileMenu.add(exit)
         helpMenu.add(instructions)
+        helpMenu.add(aboutMenu)
+        aboutMenu.add(credits)
+        aboutMenu.add(github)
         menu.add(fileMenu)
         menu.add(helpMenu)
         w.apply {
             components.forEach {add(it)}
-            setSize(714,660)
+            setSize(734,460)
             jMenuBar = menu
             defaultCloseOperation = JFrame.EXIT_ON_CLOSE
             layout = null
@@ -497,15 +508,18 @@ fun checkIfResulted() {
 fun refresh() {
     SwingUtilities.invokeLater{
         if (resulted) {
-            display.text = currentDisplay.take(10)
+            display.text = currentDisplay.take(15)
             return@invokeLater
         }
-        if (numberOfValues == 10) {
+        if (numberOfValues == 15) {
             errorSound()
             return@invokeLater
         }
         display.text = currentDisplay
     }
+}
+fun displayLimitCheck(): Boolean {
+    return currentDisplay.length >= 15
 }
 fun errorSound() {
     val toolkit = Toolkit.getDefaultToolkit()
@@ -536,5 +550,20 @@ fun sideBarWipe() {
         valueDisplay3.text = ""
         valueDisplay4.text = ""
         valueDisplay5.text = ""
+    }
+}
+fun openGithub() {
+    if (Desktop.isDesktopSupported()) {
+        val desktop = Desktop.getDesktop()
+        try {
+            // Create a URI from the URL string
+            val uri = URI("https://github.com/GMCMeowstic/kotlinSwingCalculator")
+            // Open the browser
+            desktop.browse(uri)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    } else {
+        println("Desktop is not supported on this platform")
     }
 }
