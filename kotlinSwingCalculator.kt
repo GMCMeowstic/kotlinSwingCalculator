@@ -556,14 +556,10 @@ fun openGithub() {
     if (Desktop.isDesktopSupported()) {
         val desktop = Desktop.getDesktop()
         try {
-            // Create a URI from the URL string
             val uri = URI("https://github.com/GMCMeowstic/kotlinSwingCalculator")
-            // Open the browser
             desktop.browse(uri)
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    } else {
-        println("Desktop is not supported on this platform")
-    }
+    } else return
 }
