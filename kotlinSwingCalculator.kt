@@ -30,26 +30,27 @@ data class Values(
     init {
         reset()
     }
-    fun getA() = a
-    fun getB() = b
-    fun getC() = c
-    fun getD() = d
-    fun getE() = e
-    fun setA(i: Double) {a = i}
-    fun setB(i: Double) {b = i}
-    fun setC(i: Double) {c = i}
-    fun setD(i: Double) {d = i}
-    fun setE(i: Double) {e = i}
+    fun getA() = a.pow(aExponent)
+    fun getB() = b.pow(bExponent)
+    fun getC() = c.pow(cExponent)
+    fun getD() = d.pow(dExponent)
+    fun getE() = e.pow(eExponent)
+    fun setA(i: Double) {a = i; return} fun setAExponent(i: Double) {aExponent = i; return}
+    fun setB(i: Double) {b = i; return} fun setBExponent(i: Double) {bExponent = i; return}
+    fun setC(i: Double) {c = i; return} fun setCExponent(i: Double) {cExponent = i; return}
+    fun setD(i: Double) {d = i; return} fun setDExponent(i: Double) {dExponent = i; return}
+    fun setE(i: Double) {e = i; return} fun setEExponent(i: Double) {eExponent = i; return}
     fun reset() {
-        a = 0.0; aExponent = 0.0
-        b = 0.0; bExponent = 0.0
-        c = 0.0; cExponent = 0.0
-        d = 0.0; dExponent = 0.0
-        e = 0.0; eExponent = 0.0
+        a = 0.0; aExponent = 1.0
+        b = 0.0; bExponent = 1.0
+        c = 0.0; cExponent = 1.0
+        d = 0.0; dExponent = 1.0
+        e = 0.0; eExponent = 1.0
     }
 }
 var isADecimal = false
 var isAnInteger = false
+var isAnExponent = false
 var resulted = false
 var numberOfValues = 0
 val w = JFrame("calcGUI.kt")
@@ -58,7 +59,6 @@ val fileMenu = JMenu("File")
 val helpMenu = JMenu("Help")
 val aboutMenu = JMenu("About this shit")
 val exit = JMenuItem("Exit                      Alt+F4")
-val settings = JMenuItem("Preferences")
 val instructions = JMenuItem("Instructions")
 val credits = JMenuItem("Credits")
 val github = JMenuItem("Github")
@@ -98,21 +98,7 @@ val display = object : JLabel() {
 }
 fun main() {
     SwingUtilities.invokeLater {
-        val value = Values(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)
-        fun sideBar() {
-            val a = value.getA()
-            val b = value.getB()
-            val c = value.getC()
-            val d = value.getD()
-            val e = value.getE()
-            SwingUtilities.invokeLater {
-                if (numberOfValues >= 1) valueDisplay1.text = a.toString()
-                if (numberOfValues >= 2) valueDisplay2.text = b.toString()
-                if (numberOfValues >= 3) valueDisplay3.text = c.toString()
-                if (numberOfValues >= 4) valueDisplay4.text = d.toString()
-                if (numberOfValues >= 5) valueDisplay5.text = e.toString()
-            }
-        }
+        val value = Values(0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0,1.0,1.0)
         valueLabel.apply {
             setBounds(2, 0, 300, 100)
             font = Font("Arial", Font.PLAIN, 40)
@@ -298,6 +284,13 @@ fun main() {
             refresh()
             isAnInteger
         }
+        butExponent.addActionListener {
+            if (isAnExponent) {errorSound(); return@addActionListener}
+            if (currentDisplay.isEmpty()) {errorSound(); return@addActionListener}
+            isAnExponent = true
+            currentDisplay += "^"
+            refresh()
+        }
         butClear.addActionListener {
             currentDisplay = ""
             numberOfValues = 0
@@ -334,7 +327,7 @@ fun main() {
                 )
                 return@addActionListener
             }
-            if (currentDisplay.all{it == '.'} || currentDisplay.all{it=='-'}) {
+            if (currentDisplay.all { it == '.' } || currentDisplay.all { it == '-' } || currentDisplay.all { it == '^' }) {
                 errorSound()
                 return@addActionListener
             }
@@ -349,18 +342,62 @@ fun main() {
                 return@addActionListener
             }
             numberOfValues++
-            when (numberOfValues) {
-                1 -> value.setA(currentDisplay.toDouble())
-                2 -> value.setB(currentDisplay.toDouble())
-                3 -> value.setC(currentDisplay.toDouble())
-                4 -> value.setD(currentDisplay.toDouble())
-                5 -> value.setE(currentDisplay.toDouble())
+            val worker = object : SwingWorker<Void, Void>() {
+                override fun doInBackground(): Void? {
+                    sideBar()
+                    return null
+                }
+                override fun done() {
+                    when (numberOfValues) {
+                        1 -> {
+                            if (!isAnExponent) value.setA(currentDisplay.toDouble())
+                            else {
+                                val exponentSplitter = currentDisplay.split("^")
+                                value.setA(exponentSplitter[0].toDouble())
+                                value.setAExponent(exponentSplitter[1].toDouble())
+                            }
+                        }
+                        2 -> {
+                            if (!isAnExponent) value.setB(currentDisplay.toDouble())
+                            else {
+                                val exponentSplitter = currentDisplay.split("^")
+                                value.setB(exponentSplitter[0].toDouble())
+                                value.setBExponent(exponentSplitter[1].toDouble())
+                            }
+                        }
+                        3 -> {
+                            if (!isAnExponent) value.setC(currentDisplay.toDouble())
+                            else {
+                                val exponentSplitter = currentDisplay.split("^")
+                                value.setC(exponentSplitter[0].toDouble())
+                                value.setAExponent(exponentSplitter[1].toDouble())
+                            }
+                        }
+                        4 -> {
+                            if (!isAnExponent) value.setD(currentDisplay.toDouble())
+                            else {
+                                val exponentSplitter = currentDisplay.split("^")
+                                value.setD(exponentSplitter[0].toDouble())
+                                value.setAExponent(exponentSplitter[1].toDouble())
+                            }
+                        }
+                        5 -> {
+                            if (!isAnExponent) value.setE(currentDisplay.toDouble())
+                            else {
+                                val exponentSplitter = currentDisplay.split("^")
+                                value.setE(exponentSplitter[0].toDouble())
+                                value.setAExponent(exponentSplitter[1].toDouble())
+                            }
+                        }
+                    }
+                    isADecimal = false
+                    isAnInteger = false
+                    isAnExponent = false
+                    currentDisplay = ""
+                    refresh()
+                }
             }
-            sideBar()
-            currentDisplay = ""
-            refresh()
-            isADecimal = false
-            isAnInteger = false
+            worker.execute()
         }
         butAdd.addActionListener {
             currentDisplay = (value.getA()+value.getB()+value.getC()+value.getD()+value.getE()).toString()
@@ -371,7 +408,6 @@ fun main() {
         }
         butSub.addActionListener {
             currentDisplay = (value.getA()-value.getB()-value.getC()-value.getD()-value.getE()).toString()
-            value.reset()
             numberOfValues = 0
             resulted = true
             refresh()
@@ -422,14 +458,6 @@ fun main() {
             resulted = true
             refresh()
         }
-        butExponent.addActionListener {
-            if (numberOfValues != 2)  validValuesNumError(2)
-            else {
-                currentDisplay = value.getA().pow(value.getB()).toString()
-            }
-            resulted = true
-            refresh()
-        }
         credits.addActionListener {
             val c = JFrame("Credits")
             val text = JLabel("<html>GMCMarshy - The actual code itself<br>Frost - Emotional Support</html>")
@@ -441,16 +469,6 @@ fun main() {
             c.isResizable = false
             c.setLocationRelativeTo(null)
             c.isVisible = true
-        }
-        settings.addActionListener {
-            val s = JFrame("Preferences")
-            val text = JLabel("still in development")
-            s.setSize(350,200)
-            s.add(text)
-            s.defaultCloseOperation = JFrame.HIDE_ON_CLOSE
-            s.isResizable = false
-            s.setLocationRelativeTo(null)
-            s.isVisible = true
         }
         exit.addActionListener { exitProcess(0) }
         instructions.addActionListener {
@@ -472,7 +490,6 @@ fun main() {
             butExponent, butEnter, butInt, butDecimal, display, valueLabel,
             valueDisplay1, valueDisplay2, valueDisplay3, valueDisplay4, valueDisplay5
         )
-        fileMenu.add(settings)
         fileMenu.add(exit)
         helpMenu.add(instructions)
         helpMenu.add(aboutMenu)
@@ -503,6 +520,17 @@ fun checkIfResulted() {
             isADecimal = false
         }
         else return@invokeLater
+    }
+}
+fun sideBar() {
+    SwingUtilities.invokeLater {
+        when (numberOfValues) {
+            1 -> valueDisplay1.text = currentDisplay
+            2 -> valueDisplay2.text = currentDisplay
+            3 -> valueDisplay3.text = currentDisplay
+            4 -> valueDisplay4.text = currentDisplay
+            5 -> valueDisplay5.text = currentDisplay
+        }
     }
 }
 fun refresh() {
@@ -554,10 +582,8 @@ fun sideBarWipe() {
 }
 fun openGithub() {
     if (Desktop.isDesktopSupported()) {
-        val desktop = Desktop.getDesktop()
         try {
-            val uri = URI("https://github.com/GMCMeowstic/kotlinSwingCalculator")
-            desktop.browse(uri)
+            Desktop.getDesktop().browse(URI("https://github.com/GMCMeowstic/kotlinSwingCalculator"))
         } catch (e: Exception) {
             e.printStackTrace()
         }
