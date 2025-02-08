@@ -25,32 +25,38 @@ data class Values(
     private var bExponent: Double,
     private var cExponent: Double,
     private var dExponent: Double,
-    private var eExponent: Double
+    private var eExponent: Double,
+    private var aSquareRoot: Boolean,
+    private var bSquareRoot: Boolean,
+    private var cSquareRoot: Boolean,
+    private var dSquareRoot: Boolean,
+    private var eSquareRoot: Boolean
 ) {
     init {
         reset()
     }
-    fun getA() = a.pow(aExponent)
-    fun getB() = b.pow(bExponent)
-    fun getC() = c.pow(cExponent)
-    fun getD() = d.pow(dExponent)
-    fun getE() = e.pow(eExponent)
-    fun setA(i: Double) {a = i; return} fun setAExponent(i: Double) {aExponent = i; return}
-    fun setB(i: Double) {b = i; return} fun setBExponent(i: Double) {bExponent = i; return}
-    fun setC(i: Double) {c = i; return} fun setCExponent(i: Double) {cExponent = i; return}
-    fun setD(i: Double) {d = i; return} fun setDExponent(i: Double) {dExponent = i; return}
-    fun setE(i: Double) {e = i; return} fun setEExponent(i: Double) {eExponent = i; return}
+    fun getA() = a.pow(aExponent) fun isASquareRoot() = aSquareRoot
+    fun getB() = b.pow(bExponent) fun isBSquareRoot() = bSquareRoot
+    fun getC() = c.pow(cExponent) fun isCSquareRoot() = cSquareRoot
+    fun getD() = d.pow(dExponent) fun isDSquareRoot() = dSquareRoot
+    fun getE() = e.pow(eExponent) fun isESquareRoot() = eSquareRoot
+    fun setA(i: Double) {a = i; return} fun setAExponent(i: Double) {aExponent = i; return} fun setASquareRoot(i: Boolean) {aSquareRoot = i; return}
+    fun setB(i: Double) {b = i; return} fun setBExponent(i: Double) {bExponent = i; return} fun setBSquareRoot(i: Boolean) {bSquareRoot = i; return}
+    fun setC(i: Double) {c = i; return} fun setCExponent(i: Double) {cExponent = i; return} fun setCSquareRoot(i: Boolean) {cSquareRoot = i; return}
+    fun setD(i: Double) {d = i; return} fun setDExponent(i: Double) {dExponent = i; return} fun setDSquareRoot(i: Boolean) {dSquareRoot = i; return}
+    fun setE(i: Double) {e = i; return} fun setEExponent(i: Double) {eExponent = i; return} fun setESquareRoot(i: Boolean) {eSquareRoot = i; return}
     fun reset() {
-        a = 0.0; aExponent = 1.0
-        b = 0.0; bExponent = 1.0
-        c = 0.0; cExponent = 1.0
-        d = 0.0; dExponent = 1.0
-        e = 0.0; eExponent = 1.0
+        a = 0.0; aExponent = 1.0; aSquareRoot = false
+        b = 0.0; bExponent = 1.0; bSquareRoot = false
+        c = 0.0; cExponent = 1.0; cSquareRoot = false
+        d = 0.0; dExponent = 1.0; dSquareRoot = false
+        e = 0.0; eExponent = 1.0; eSquareRoot = false
     }
 }
 var isADecimal = false
 var isAnInteger = false
 var isAnExponent = false
+var hasSquareRoot = false
 var resulted = false
 var numberOfValues = 0
 val w = JFrame("calcGUI.kt")
@@ -96,9 +102,15 @@ val display = object : JLabel() {
         super.paintComponent(g)
     }
 }
+val value = Values(0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0,1.0,1.0,
+    aSquareRoot = false,
+    bSquareRoot = false,
+    cSquareRoot = false,
+    dSquareRoot = false,
+    eSquareRoot = false
+)
 fun main() {
     SwingUtilities.invokeLater {
-        val value = Values(0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0,1.0,1.0)
         valueLabel.apply {
             setBounds(2, 0, 300, 100)
             font = Font("Arial", Font.PLAIN, 40)
@@ -291,6 +303,14 @@ fun main() {
             currentDisplay += "^"
             refresh()
         }
+        butSqrt.addActionListener {
+            checkIfResulted()
+            if (hasSquareRoot) {errorSound(); return@addActionListener}
+            if (currentDisplay.isNotEmpty()) {errorSound(); return@addActionListener}
+            hasSquareRoot = true
+            currentDisplay += "√"
+            refresh()
+        }
         butClear.addActionListener {
             currentDisplay = ""
             numberOfValues = 0
@@ -299,6 +319,7 @@ fun main() {
             sideBarWipe()
             isADecimal = false
             isAnInteger = false
+            hasSquareRoot = false
         }
         butBack.addActionListener {
             if (currentDisplay == "") {
@@ -327,7 +348,7 @@ fun main() {
                 )
                 return@addActionListener
             }
-            if (currentDisplay.all { it == '.' } || currentDisplay.all { it == '-' } || currentDisplay.all { it == '^' }) {
+            if (currentDisplay.all { it == '.' } || currentDisplay.all { it == '-' } || currentDisplay.all { it == '^' } || currentDisplay.all { it == '√' }) {
                 errorSound()
                 return@addActionListener
             }
@@ -342,12 +363,22 @@ fun main() {
                 return@addActionListener
             }
             numberOfValues++
+            if (hasSquareRoot) {
+                when (numberOfValues) {
+                    1 -> value.setASquareRoot(true)
+                    2 -> value.setBSquareRoot(true)
+                    3 -> value.setCSquareRoot(true)
+                    4 -> value.setDSquareRoot(true)
+                    5 -> value.setESquareRoot(true)
+                }
+            }
             val worker = object : SwingWorker<Void, Void>() {
                 override fun doInBackground(): Void? {
                     sideBar()
                     return null
                 }
                 override fun done() {
+                    currentDisplay = currentDisplay.removePrefix("√")
                     when (numberOfValues) {
                         1 -> {
                             if (!isAnExponent) value.setA(currentDisplay.toDouble())
@@ -393,6 +424,7 @@ fun main() {
                     isADecimal = false
                     isAnInteger = false
                     isAnExponent = false
+                    hasSquareRoot = false
                     currentDisplay = ""
                     refresh()
                 }
@@ -400,24 +432,24 @@ fun main() {
             worker.execute()
         }
         butAdd.addActionListener {
-            currentDisplay = (value.getA()+value.getB()+value.getC()+value.getD()+value.getE()).toString()
+            currentDisplay = (squareRoot(1)+squareRoot(2)+squareRoot(3)+squareRoot(4)+squareRoot(5)).toString()
             value.reset()
             numberOfValues = 0
             resulted = true
             refresh()
         }
         butSub.addActionListener {
-            currentDisplay = (value.getA()-value.getB()-value.getC()-value.getD()-value.getE()).toString()
+            currentDisplay = (squareRoot(1)-squareRoot(2)-squareRoot(3)-squareRoot(4)-squareRoot(5)).toString()
             numberOfValues = 0
             resulted = true
             refresh()
         }
         butMul.addActionListener {
             when (numberOfValues) {
-                2 -> currentDisplay = (value.getA()*value.getB()).toString()
-                3 -> currentDisplay = (value.getA()*value.getB()*value.getC()).toString()
-                4 -> currentDisplay = (value.getA()*value.getB()*value.getC()*value.getD()).toString()
-                5 -> currentDisplay = (value.getA()*value.getB()*value.getC()*value.getD()*value.getE()).toString()
+                2 -> currentDisplay = (squareRoot(1)*squareRoot(2)).toString()
+                3 -> currentDisplay = (squareRoot(1)*squareRoot(2)*squareRoot(3)).toString()
+                4 -> currentDisplay = (squareRoot(1)*squareRoot(2)*squareRoot(3)*squareRoot(4)).toString()
+                5 -> currentDisplay = (squareRoot(1)*squareRoot(2)*squareRoot(3)*squareRoot(4)*squareRoot(5)).toString()
             }
             value.reset()
             numberOfValues = 0
@@ -428,32 +460,22 @@ fun main() {
             when (numberOfValues) {
                 2 -> {
                     if (listOf(value.getA(),value.getB()).contains(0.0)) divBy0()
-                    else currentDisplay = (value.getA()/value.getB()).toString()
+                    else currentDisplay = (squareRoot(1)/squareRoot(2)).toString()
                 }
                 3 -> {
                     if (listOf(value.getA(),value.getB(),value.getC()).contains(0.0)) divBy0()
-                    else currentDisplay = (value.getA()/value.getB()/value.getC()).toString()
+                    else currentDisplay = (squareRoot(1)/squareRoot(2)/squareRoot(3)).toString()
                 }
                 4 -> {
                     if (listOf(value.getA(),value.getB(),value.getC(),value.getD()).contains(0.0)) divBy0()
-                    else currentDisplay = (value.getA()/value.getB()/value.getC()/value.getD()).toString()
+                    else currentDisplay = (squareRoot(1)/squareRoot(2)/squareRoot(3)/squareRoot(4)).toString()
                 }
                 5 -> {
                     if (listOf(value.getA(),value.getB(),value.getC(),value.getD(),value.getE()).contains(0.0)) divBy0()
-                    else currentDisplay = (value.getA()/value.getB()/value.getC()/value.getD()/value.getE()).toString()
+                    else currentDisplay = (squareRoot(1)/squareRoot(2)/squareRoot(3)/squareRoot(4)/squareRoot(5)).toString()
                 }
             }
             value.reset()
-            numberOfValues = 0
-            resulted = true
-            refresh()
-        }
-        butSqrt.addActionListener {
-            if (numberOfValues != 1) {
-                validValuesNumError(1)
-                return@addActionListener
-            }
-            currentDisplay = sqrt(value.getA()).toString()
             numberOfValues = 0
             resulted = true
             refresh()
@@ -509,6 +531,16 @@ fun main() {
         }
     }
 }
+fun squareRoot(position: Int): Double {
+    return when (position) {
+        1 -> if (value.isASquareRoot()) sqrt(value.getA()) else value.getA()
+        2 -> if (value.isBSquareRoot()) sqrt(value.getB()) else value.getB()
+        3 -> if (value.isCSquareRoot()) sqrt(value.getC()) else value.getC()
+        4 -> if (value.isDSquareRoot()) sqrt(value.getD()) else value.getD()
+        5 -> if (value.isESquareRoot()) sqrt(value.getE()) else value.getE()
+        else -> exitProcess(1)
+    }
+}
 fun checkIfResulted() {
     SwingUtilities.invokeLater {
         if (resulted) {
@@ -558,15 +590,6 @@ fun divBy0() {
     JOptionPane.showMessageDialog(
         null,
         "You cant divide by 0, you fucking retard.",
-        "Error",
-        JOptionPane.ERROR_MESSAGE
-    )
-}
-fun validValuesNumError(x: Int) {
-    errorSound()
-    JOptionPane.showMessageDialog(
-        null,
-        "Only $x value can be operated.",
         "Error",
         JOptionPane.ERROR_MESSAGE
     )
