@@ -95,7 +95,7 @@ val valueDisplay2 = JLabel()
 val valueDisplay3 = JLabel()
 val valueDisplay4 = JLabel()
 val valueDisplay5 = JLabel()
-val displayObject = object : JLabel() {
+val display = object : JLabel() {
     override fun paintComponent(g: Graphics) {
         g.color = Color.LIGHT_GRAY
         g.fillRect(0, 0, width, height)
@@ -109,124 +109,6 @@ val value = Values(0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0,1.0,1.0,
     dSquareRoot = false,
     eSquareRoot = false
 )
-val display = Display()
-class Display {
-    fun refresh() {
-        SwingUtilities.invokeLater{
-            if (resulted) {
-                displayObject.text = currentDisplay.take(15)
-                return@invokeLater
-            }
-            if (numberOfValues == 15) {
-                errorSound()
-                return@invokeLater
-            }
-            displayObject.text = currentDisplay
-        }
-    }
-    fun type(character: String) {
-        if (displayLimitCheck()) {
-            errorSound() 
-            return
-        } 
-        checkIfResulted()
-        currentDisplay += character
-        display.refresh()
-    }
-    fun clear() {
-        currentDisplay = ""
-        display.refresh()
-    }
-
-}
-val sideBar = ValueDisplay()
-class ValueDisplay {
-    fun wipe() {
-        SwingUtilities.invokeLater {
-            valueDisplay1.text = ""
-            valueDisplay2.text = ""
-            valueDisplay3.text = ""
-            valueDisplay4.text = ""
-            valueDisplay5.text = ""
-        }
-    }
-    fun refresh() {
-        SwingUtilities.invokeLater {
-            when (numberOfValues) {
-                1 -> valueDisplay1.text = currentDisplay
-                2 -> valueDisplay2.text = currentDisplay
-                3 -> valueDisplay3.text = currentDisplay
-                4 -> valueDisplay4.text = currentDisplay
-                5 -> valueDisplay5.text = currentDisplay
-            }
-        }
-    }
-}
-val calculate = Calculation()
-class Calculation {
-    fun addition() {
-        currentDisplay = (preCalculation.squareRoot(1)+preCalculation.squareRoot(2)+preCalculation.squareRoot(3)+preCalculation.squareRoot(4)+preCalculation.squareRoot(5)).toString()
-        value.reset()
-        numberOfValues = 0
-        resulted = true
-        display.refresh()
-    }
-    fun subdivision() {
-        currentDisplay = (preCalculation.squareRoot(1)-preCalculation.squareRoot(2)-preCalculation.squareRoot(3)-preCalculation.squareRoot(4)-preCalculation.squareRoot(5)).toString()
-        numberOfValues = 0
-        resulted = true
-        display.refresh()
-    }
-    fun multiply() {
-        when (numberOfValues) {
-            2 -> currentDisplay = (preCalculation.squareRoot(1)*preCalculation.squareRoot(2)).toString()
-            3 -> currentDisplay = (preCalculation.squareRoot(1)*preCalculation.squareRoot(2)*preCalculation.squareRoot(3)).toString()
-            4 -> currentDisplay = (preCalculation.squareRoot(1)*preCalculation.squareRoot(2)*preCalculation.squareRoot(3)*preCalculation.squareRoot(4)).toString()
-            5 -> currentDisplay = (preCalculation.squareRoot(1)*preCalculation.squareRoot(2)*preCalculation.squareRoot(3)*preCalculation.squareRoot(4)*preCalculation.squareRoot(5)).toString()
-        }
-        value.reset()
-        numberOfValues = 0
-        resulted = true
-        display.refresh()
-    }
-    fun divide() {
-        when (numberOfValues) {
-            2 -> {
-                if (listOf(value.getA(),value.getB()).contains(0.0)) divBy0()
-                else currentDisplay = (preCalculation.squareRoot(1)/preCalculation.squareRoot(2)).toString()
-            }
-            3 -> {
-                if (listOf(value.getA(),value.getB(),value.getC()).contains(0.0)) divBy0()
-                else currentDisplay = (preCalculation.squareRoot(1)/preCalculation.squareRoot(2)/preCalculation.squareRoot(3)).toString()
-            }
-            4 -> {
-                if (listOf(value.getA(),value.getB(),value.getC(),value.getD()).contains(0.0)) divBy0()
-                else currentDisplay = (preCalculation.squareRoot(1)/preCalculation.squareRoot(2)/preCalculation.squareRoot(3)/preCalculation.squareRoot(4)).toString()
-            }
-            5 -> {
-                if (listOf(value.getA(),value.getB(),value.getC(),value.getD(),value.getE()).contains(0.0)) divBy0()
-                else currentDisplay = (preCalculation.squareRoot(1)/preCalculation.squareRoot(2)/preCalculation.squareRoot(3)/preCalculation.squareRoot(4)/preCalculation.squareRoot(5)).toString()
-            }
-        }
-        value.reset()
-        numberOfValues = 0
-        resulted = true
-        display.refresh()
-    }
-}
-val preCalculation = PreCalculation()
-class PreCalculation {
-    fun squareRoot(position: Int): Double {
-        return when (position) {
-            1 -> if (value.isASquareRoot()) sqrt(value.getA()) else value.getA()
-            2 -> if (value.isBSquareRoot()) sqrt(value.getB()) else value.getB()
-            3 -> if (value.isCSquareRoot()) sqrt(value.getC()) else value.getC()
-            4 -> if (value.isDSquareRoot()) sqrt(value.getD()) else value.getD()
-            5 -> if (value.isESquareRoot()) sqrt(value.getE()) else value.getE()
-            else -> exitProcess(1)
-        }
-    }
-}
 fun main() {
     SwingUtilities.invokeLater {
         valueLabel.apply {
@@ -253,7 +135,7 @@ fun main() {
             setBounds(2, 340, 300, 60)
             font = Font("Arial", Font.PLAIN, 50)
         }
-        displayObject.apply {
+        display.apply {
             background = Color.GRAY
             font = Font("Arial", Font.PLAIN, 50)
             setBounds(300,0,420,100)
@@ -372,44 +254,69 @@ fun main() {
             setBounds(480, 280, 90, 60)
             isFocusable = false
         }
-        but1.addActionListener { display.type("1") }
-        but2.addActionListener { display.type("2") }
-        but3.addActionListener { display.type("3") }
-        but4.addActionListener { display.type("4") }
-        but5.addActionListener { display.type("5") }
-        but6.addActionListener { display.type("6") }
-        but7.addActionListener { display.type("7") }
-        but8.addActionListener { display.type("8") }
-        but9.addActionListener { display.type("9") }
-        but0.addActionListener { display.type("0") }
+        but1.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "1"; refresh() }
+        but2.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "2"; refresh() }
+        but3.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "3"; refresh() }
+        but4.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "4"; refresh() }
+        but5.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "5"; refresh() }
+        but6.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "6"; refresh() }
+        but7.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "7"; refresh() }
+        but8.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "8"; refresh() }
+        but9.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "9"; refresh() }
+        but0.addActionListener { if (displayLimitCheck()) {errorSound(); return@addActionListener}; checkIfResulted(); currentDisplay += "0"; refresh() }
         butDecimal.addActionListener {
+            checkIfResulted()
+            if (displayLimitCheck()) {
+                errorSound()
+                return@addActionListener
+            }
             if (isADecimal) {
                 errorSound()
                 return@addActionListener
             }
-            display.type(".")
+            currentDisplay += "."
+            refresh()
             isADecimal = true
         }
         butInt.addActionListener {
-            if (isAnInteger || currentDisplay != "") {errorSound(); return@addActionListener}
-            display.type("-")
-            isAnInteger = true
+            checkIfResulted()
+            if (displayLimitCheck()) {
+                errorSound()
+                return@addActionListener
+            }
+            if (isAnInteger) {
+                errorSound()
+                return@addActionListener
+            }
+            if (currentDisplay != "") {
+                errorSound()
+                return@addActionListener
+            }
+            currentDisplay += "-"
+            refresh()
+            isAnInteger
         }
         butExponent.addActionListener {
-            if (isAnExponent || currentDisplay.isEmpty()) {errorSound(); return@addActionListener}
+            if (isAnExponent) {errorSound(); return@addActionListener}
+            if (currentDisplay.isEmpty()) {errorSound(); return@addActionListener}
             isAnExponent = true
-            display.type("^")
+            currentDisplay += "^"
+            refresh()
         }
         butSqrt.addActionListener {
             checkIfResulted()
-            if (hasSquareRoot || currentDisplay.isNotEmpty()) {errorSound(); return@addActionListener}
+            if (hasSquareRoot) {errorSound(); return@addActionListener}
+            if (currentDisplay.isNotEmpty()) {errorSound(); return@addActionListener}
             hasSquareRoot = true
-            display.type("√")
+            currentDisplay += "√"
+            refresh()
         }
         butClear.addActionListener {
+            currentDisplay = ""
             numberOfValues = 0
             value.reset()
-            display.clear()
+            refresh()
+            sideBarWipe()
             isADecimal = false
             isAnInteger = false
             hasSquareRoot = false
@@ -420,14 +327,14 @@ fun main() {
                 return@addActionListener
             }
             currentDisplay = currentDisplay.dropLast(1)
-            display.refresh()
+            refresh()
             if (currentDisplay.isEmpty()) {
                 isADecimal = false
                 isAnInteger = false
             }
         }
         butEnter.addActionListener {
-            if (currentDisplay == "" || currentDisplay.all { it == '.' } || currentDisplay.all { it == '-' } || currentDisplay.all { it == '^' } || currentDisplay.all { it == '√' }) {
+            if (currentDisplay == "") {
                 errorSound()
                 return@addActionListener
             }
@@ -439,6 +346,10 @@ fun main() {
                     "Error",
                     JOptionPane.ERROR_MESSAGE
                 )
+                return@addActionListener
+            }
+            if (currentDisplay.all { it == '.' } || currentDisplay.all { it == '-' } || currentDisplay.all { it == '^' } || currentDisplay.all { it == '√' }) {
+                errorSound()
                 return@addActionListener
             }
             if (numberOfValues == 5) {
@@ -463,7 +374,7 @@ fun main() {
             }
             val worker = object : SwingWorker<Void, Void>() {
                 override fun doInBackground(): Void? {
-                    sideBar.refresh()
+                    sideBar()
                     return null
                 }
                 override fun done() {
@@ -490,7 +401,7 @@ fun main() {
                             else {
                                 val exponentSplitter = currentDisplay.split("^")
                                 value.setC(exponentSplitter[0].toDouble())
-                                value.setCExponent(exponentSplitter[1].toDouble())
+                                value.setAExponent(exponentSplitter[1].toDouble())
                             }
                         }
                         4 -> {
@@ -498,7 +409,7 @@ fun main() {
                             else {
                                 val exponentSplitter = currentDisplay.split("^")
                                 value.setD(exponentSplitter[0].toDouble())
-                                value.setDExponent(exponentSplitter[1].toDouble())
+                                value.setAExponent(exponentSplitter[1].toDouble())
                             }
                         }
                         5 -> {
@@ -506,7 +417,7 @@ fun main() {
                             else {
                                 val exponentSplitter = currentDisplay.split("^")
                                 value.setE(exponentSplitter[0].toDouble())
-                                value.setEExponent(exponentSplitter[1].toDouble())
+                                value.setAExponent(exponentSplitter[1].toDouble())
                             }
                         }
                     }
@@ -514,22 +425,60 @@ fun main() {
                     isAnInteger = false
                     isAnExponent = false
                     hasSquareRoot = false
-                    display.clear()
+                    currentDisplay = ""
+                    refresh()
                 }
             }
             worker.execute()
         }
         butAdd.addActionListener {
-            calculate.addition()
+            currentDisplay = (squareRoot(1)+squareRoot(2)+squareRoot(3)+squareRoot(4)+squareRoot(5)).toString()
+            value.reset()
+            numberOfValues = 0
+            resulted = true
+            refresh()
         }
         butSub.addActionListener {
-            calculate.subdivision()
+            currentDisplay = (squareRoot(1)-squareRoot(2)-squareRoot(3)-squareRoot(4)-squareRoot(5)).toString()
+            numberOfValues = 0
+            resulted = true
+            refresh()
         }
         butMul.addActionListener {
-            calculate.multiply()
+            when (numberOfValues) {
+                2 -> currentDisplay = (squareRoot(1)*squareRoot(2)).toString()
+                3 -> currentDisplay = (squareRoot(1)*squareRoot(2)*squareRoot(3)).toString()
+                4 -> currentDisplay = (squareRoot(1)*squareRoot(2)*squareRoot(3)*squareRoot(4)).toString()
+                5 -> currentDisplay = (squareRoot(1)*squareRoot(2)*squareRoot(3)*squareRoot(4)*squareRoot(5)).toString()
+            }
+            value.reset()
+            numberOfValues = 0
+            resulted = true
+            refresh()
         }
         butDiv.addActionListener {
-            calculate.divide()
+            when (numberOfValues) {
+                2 -> {
+                    if (listOf(value.getA(),value.getB()).contains(0.0)) divBy0()
+                    else currentDisplay = (squareRoot(1)/squareRoot(2)).toString()
+                }
+                3 -> {
+                    if (listOf(value.getA(),value.getB(),value.getC()).contains(0.0)) divBy0()
+                    else currentDisplay = (squareRoot(1)/squareRoot(2)/squareRoot(3)).toString()
+                }
+                4 -> {
+                    if (listOf(value.getA(),value.getB(),value.getC(),value.getD()).contains(0.0)) divBy0()
+                    else currentDisplay = (squareRoot(1)/squareRoot(2)/squareRoot(3)/squareRoot(4)).toString()
+                }
+                5 -> {
+                    if (listOf(value.getA(),value.getB(),value.getC(),value.getD(),value.getE()).contains(0.0)) divBy0()
+                    else currentDisplay = (squareRoot(1)/squareRoot(2)/squareRoot(3)/squareRoot(4)/squareRoot(5)).toString()
+                }
+            }
+            value.reset()
+            numberOfValues = 0
+            resulted = true
+            refresh()
         }
         credits.addActionListener {
             val c = JFrame("Credits")
@@ -560,7 +509,7 @@ fun main() {
         val components = listOf(
             but1, but2, but3, but4, but5, but6, but7, but8, but9, but0,
             butBack, butClear, butAdd, butSub, butMul, butDiv, butSqrt,
-            butExponent, butEnter, butInt, butDecimal, displayObject, valueLabel,
+            butExponent, butEnter, butInt, butDecimal, display, valueLabel,
             valueDisplay1, valueDisplay2, valueDisplay3, valueDisplay4, valueDisplay5
         )
         fileMenu.add(exit)
@@ -571,7 +520,7 @@ fun main() {
         menu.add(fileMenu)
         menu.add(helpMenu)
         w.apply {
-            components.forEach{add(it)}
+            components.forEach {add(it)}
             setSize(734,460)
             jMenuBar = menu
             defaultCloseOperation = JFrame.EXIT_ON_CLOSE
@@ -582,16 +531,51 @@ fun main() {
         }
     }
 }
+fun squareRoot(position: Int): Double {
+    return when (position) {
+        1 -> if (value.isASquareRoot()) sqrt(value.getA()) else value.getA()
+        2 -> if (value.isBSquareRoot()) sqrt(value.getB()) else value.getB()
+        3 -> if (value.isCSquareRoot()) sqrt(value.getC()) else value.getC()
+        4 -> if (value.isDSquareRoot()) sqrt(value.getD()) else value.getD()
+        5 -> if (value.isESquareRoot()) sqrt(value.getE()) else value.getE()
+        else -> exitProcess(1)
+    }
+}
 fun checkIfResulted() {
     SwingUtilities.invokeLater {
         if (resulted) {
-            display.clear()
-            sideBar.wipe()
+            currentDisplay = ""
+            refresh()
+            sideBarWipe()
             resulted = false
             isAnInteger = false
             isADecimal = false
         }
         else return@invokeLater
+    }
+}
+fun sideBar() {
+    SwingUtilities.invokeLater {
+        when (numberOfValues) {
+            1 -> valueDisplay1.text = currentDisplay
+            2 -> valueDisplay2.text = currentDisplay
+            3 -> valueDisplay3.text = currentDisplay
+            4 -> valueDisplay4.text = currentDisplay
+            5 -> valueDisplay5.text = currentDisplay
+        }
+    }
+}
+fun refresh() {
+    SwingUtilities.invokeLater{
+        if (resulted) {
+            display.text = currentDisplay.take(15)
+            return@invokeLater
+        }
+        if (numberOfValues == 15) {
+            errorSound()
+            return@invokeLater
+        }
+        display.text = currentDisplay
     }
 }
 fun displayLimitCheck(): Boolean {
@@ -609,6 +593,15 @@ fun divBy0() {
         "Error",
         JOptionPane.ERROR_MESSAGE
     )
+}
+fun sideBarWipe() {
+    SwingUtilities.invokeLater {
+        valueDisplay1.text = ""
+        valueDisplay2.text = ""
+        valueDisplay3.text = ""
+        valueDisplay4.text = ""
+        valueDisplay5.text = ""
+    }
 }
 fun openGithub() {
     if (Desktop.isDesktopSupported()) {
