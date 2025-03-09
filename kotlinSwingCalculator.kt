@@ -334,7 +334,7 @@ fun main() {
             }
         }
         butEnter.addActionListener {
-            if (currentDisplay == "") {
+            if (currentDisplay == "" || currentDisplay.all { it == '.' } || currentDisplay.all { it == '-' } || currentDisplay.all { it == '^' } || currentDisplay.all { it == '√' }) {
                 errorSound()
                 return@addActionListener
             }
@@ -346,10 +346,6 @@ fun main() {
                     "Error",
                     JOptionPane.ERROR_MESSAGE
                 )
-                return@addActionListener
-            }
-            if (currentDisplay.all { it == '.' } || currentDisplay.all { it == '-' } || currentDisplay.all { it == '^' } || currentDisplay.all { it == '√' }) {
-                errorSound()
                 return@addActionListener
             }
             if (numberOfValues == 5) {
@@ -401,7 +397,7 @@ fun main() {
                             else {
                                 val exponentSplitter = currentDisplay.split("^")
                                 value.setC(exponentSplitter[0].toDouble())
-                                value.setAExponent(exponentSplitter[1].toDouble())
+                                value.setCExponent(exponentSplitter[1].toDouble())
                             }
                         }
                         4 -> {
@@ -409,7 +405,7 @@ fun main() {
                             else {
                                 val exponentSplitter = currentDisplay.split("^")
                                 value.setD(exponentSplitter[0].toDouble())
-                                value.setAExponent(exponentSplitter[1].toDouble())
+                                value.setDExponent(exponentSplitter[1].toDouble())
                             }
                         }
                         5 -> {
@@ -417,7 +413,7 @@ fun main() {
                             else {
                                 val exponentSplitter = currentDisplay.split("^")
                                 value.setE(exponentSplitter[0].toDouble())
-                                value.setAExponent(exponentSplitter[1].toDouble())
+                                value.setEExponent(exponentSplitter[1].toDouble())
                             }
                         }
                     }
